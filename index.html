@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="description" content="Solo Leveling System - Level up your real life">
+    <title>Solo Leveling System</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Overlay Notification Container -->
+    <div id="notification-overlay"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="neon-text">Initializing System...</h2>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo neon-text">SOLO LEVELING</h1>
+                <div class="header-stats">
+                    <div class="stat-mini">
+                        <span class="stat-label">Level</span>
+                        <span id="header-level" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-label">Rank</span>
+                        <span id="header-rank" class="stat-value rank-E">E</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-page="dashboard">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-btn" data-page="quests">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Quests</span>
+            </button>
+            <button class="nav-btn" data-page="skills">
+                <span class="nav-icon">🌟</span>
+                <span class="nav-label">Skills</span>
+            </button>
+            <button class="nav-btn" data-page="stats">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Stats</span>
+            </button>
+            <button class="nav-btn" data-page="assistant">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">AI</span>
+            </button>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <section id="page-dashboard" class="page active">
+            <div class="page-content">
+                <!-- Avatar Section -->
+                <div class="glass-panel avatar-section">
+                    <div class="avatar-container">
+                        <div id="avatar-display" class="avatar-display">
+                            <div class="avatar-glow"></div>
+                            <div class="avatar-level-badge" id="avatar-level-badge">1</div>
+                        </div>
+                        <h2 id="player-name" class="player-name">Hunter</h2>
+                        <p id="player-rank" class="player-rank rank-E">Rank: E</p>
+                    </div>
+                </div>
+
+                <!-- XP Progress Bar -->
+                <div class="glass-panel xp-panel">
+                    <div class="xp-header">
+                        <span class="xp-label">Experience Points</span>
+                        <span id="xp-display" class="xp-amount">0 / 100</span>
+                    </div>
+                    <div class="xp-bar-container">
+                        <div id="xp-bar" class="xp-bar"></div>
+                    </div>
+                    <div class="xp-info">
+                        <span>Next Level: <span id="xp-next-level">100</span> XP</span>
+                    </div>
+                </div>
+
+                <!-- Active Quests Preview -->
+                <div class="glass-panel">
+                    <h3 class="panel-title">Active Quests</h3>
+                    <div id="active-quests-list" class="quests-preview">
+                        <p class="empty-state">No active quests</p>
+                    </div>
+                    <button class="btn-primary" onclick="navigateTo('quests')">View All Quests</button>
+                </div>
+
+                <!-- Skill Points Summary -->
+                <div class="glass-panel">
+                    <h3 class="panel-title">Available Skill Points</h3>
+                    <div class="skill-points-display">
+                        <span id="skill-points-count" class="skill-points-value">0</span>
+                        <button id="btn-use-skill-points" class="btn-secondary">Allocate</button>
+                    </div>
+                </div>
+
+                <!-- AI System Messages -->
+                <div class="glass-panel ai-message-panel">
+                    <h3 class="panel-title">System Message</h3>
+                    <div id="ai-message-content" class="ai-message-content">
+                        Welcome, Hunter. Begin your journey to become stronger.
+                    </div>
+                </div>
+
+                <!-- Prayer Times -->
+                <div class="glass-panel prayer-times-panel" id="prayer-times-panel">
+                    <h3 class="panel-title">Prayer Times</h3>
+                    <div id="prayer-times-list" class="prayer-times-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quests Page -->
+        <section id="page-quests" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Quests</h2>
+                </div>
+
+                <!-- AI Quest Generator Input -->
+                <div class="glass-panel ai-quest-input-panel">
+                    <h3 class="panel-title">Generate Quest from Your Activity</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Describe what you're doing, planning, or need to accomplish. The System will generate a quest for you.
+                    </p>
+                    <div class="quest-input-container">
+                        <textarea 
+                            id="quest-input-text" 
+                            class="quest-input-text" 
+                            placeholder="e.g., I need to negotiate a better deal with a new client today, or I want to finish studying 2 chapters for my exam..."
+                            rows="3"
+                        ></textarea>
+                        <div class="quest-input-actions">
+                            <button id="btn-quest-voice-input" class="btn-secondary" style="width: auto; margin: 0;">
+                                <span style="margin-right: 0.5rem;">🎤</span> Voice
+                            </button>
+                            <button id="btn-generate-quest-ai" class="btn-primary" style="flex: 1; margin: 0;">
+                                Generate Quest
+                            </button>
+                        </div>
+                    </div>
+                    <div id="quest-generation-status" class="quest-generation-status" style="display: none;">
+                        <div class="loading-spinner" style="width: 20px; height: 20px; margin-right: 0.5rem;"></div>
+                        <span>Analyzing your input and generating quest...</span>
+                    </div>
+                </div>
+
+                <div id="quests-container" class="quests-container">
+                    <!-- Quests will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Page -->
+        <section id="page-skills" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Skill Tree</h2>
+                    <div class="skill-points-header">
+                        <span>Available Points: <strong id="skill-points-header">0</strong></span>
+                    </div>
+                </div>
+
+                <div id="skill-tree-container" class="skill-tree-container">
+                    <!-- Skill tree will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Page -->
+        <section id="page-stats" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Statistics</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">💪</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Strength</span>
+                            <span id="stat-strength" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">🧠</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Intelligence</span>
+                            <span id="stat-intelligence" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Strategy</span>
+                            <span id="stat-strategy" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">🛡️</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Endurance</span>
+                            <span id="stat-endurance" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">✨</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Wisdom</span>
+                            <span id="stat-wisdom" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">🤝</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Social</span>
+                            <span id="stat-social" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">⚕️</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Medical</span>
+                            <span id="stat-medical" class="stat-number">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <span class="stat-name">Financial</span>
+                            <span id="stat-financial" class="stat-number">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rank Progression -->
+                <div class="glass-panel rank-progression">
+                    <h3 class="panel-title">Rank Progression</h3>
+                    <div class="rank-bar">
+                        <div id="rank-progress" class="rank-progress"></div>
+                    </div>
+                    <div class="rank-info">
+                        <span>Current: <span id="current-rank-display" class="rank-E">E</span></span>
+                        <span>Next: <span id="next-rank-display" class="rank-D">D</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant Page -->
+        <section id="page-assistant" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">AI Assistant</h2>
+                    <button id="btn-voice-toggle" class="btn-secondary">Voice: OFF</button>
+                </div>
+
+                <div class="assistant-container">
+                    <div id="assistant-messages" class="assistant-messages">
+                        <div class="message system-message">
+                            <div class="message-content">
+                                Hello, Hunter. I am your AI assistant. How can I help you today?
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assistant-input-container">
+                        <input type="text" id="assistant-input" class="assistant-input" placeholder="Ask me anything...">
+                        <button id="btn-send-message" class="btn-send">Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Quest Modal -->
+    <div id="quest-modal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="modal-close">&times;</span>
+            <h2 id="quest-modal-title" class="modal-title"></h2>
+            <div id="quest-modal-body" class="modal-body"></div>
+            <div class="modal-actions">
+                <button id="quest-accept-btn" class="btn-primary">Accept Quest</button>
+                <button id="quest-complete-btn" class="btn-success" style="display: none;">Complete Quest</button>
+                <button id="quest-cancel-btn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/gameEngine.js"></script>
+    <script src="js/aiQuestGenerator.js"></script>
+    <script src="js/materialRewards.js"></script>
+    <script src="js/reportSystem.js"></script>
+    <script src="js/questSystem.js"></script>
+    <script src="js/skillSystem.js"></script>
+    <script src="js/aiAssistant.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/prayerTimes.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
