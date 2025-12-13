@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0a0e27">
     <meta name="description" content="Solo Leveling System - Level up your real life">
     <title>Solo Leveling System</title>
@@ -114,6 +117,28 @@
                     </div>
                 </div>
 
+                <!-- Material Rewards Summary -->
+                <div class="glass-panel">
+                    <h3 class="panel-title">Material Assets</h3>
+                    <div id="material-rewards-display" class="material-rewards-display">
+                        <div class="material-item">
+                            <span class="material-icon">💰</span>
+                            <span class="material-label">Money:</span>
+                            <span id="material-money" class="material-value">$0</span>
+                        </div>
+                        <div class="material-item">
+                            <span class="material-icon">⭐</span>
+                            <span class="material-label">Influence:</span>
+                            <span id="material-influence" class="material-value">0</span>
+                        </div>
+                        <div class="material-item">
+                            <span class="material-icon">👥</span>
+                            <span class="material-label">Allies:</span>
+                            <span id="material-allies" class="material-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- AI System Messages -->
                 <div class="glass-panel ai-message-panel">
                     <h3 class="panel-title">System Message</h3>
@@ -139,9 +164,9 @@
 
                 <!-- AI Quest Generator Input -->
                 <div class="glass-panel ai-quest-input-panel">
-                    <h3 class="panel-title">Generate Quest from Your Activity</h3>
+                    <h3 class="panel-title">Request Quest (Optional)</h3>
                     <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
-                        Describe what you're doing, planning, or need to accomplish. The System will generate a quest for you.
+                        The System automatically generates quests based on your activities. You can also manually request a quest here by describing what you're doing or planning.
                     </p>
                     <div class="quest-input-container">
                         <textarea 
@@ -301,7 +326,7 @@
             <div id="quest-modal-body" class="modal-body"></div>
             <div class="modal-actions">
                 <button id="quest-accept-btn" class="btn-primary">Accept Quest</button>
-                <button id="quest-complete-btn" class="btn-success" style="display: none;">Complete Quest</button>
+                <button id="quest-complete-btn" class="btn-success" style="display: none;">Submit Report</button>
                 <button id="quest-cancel-btn" class="btn-secondary">Cancel</button>
             </div>
         </div>
@@ -310,9 +335,11 @@
     <script src="js/database.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/gameEngine.js"></script>
+    <script src="js/dataCollection.js"></script>
     <script src="js/aiQuestGenerator.js"></script>
     <script src="js/materialRewards.js"></script>
     <script src="js/reportSystem.js"></script>
+    <script src="js/backgroundQuestGenerator.js"></script>
     <script src="js/questSystem.js"></script>
     <script src="js/skillSystem.js"></script>
     <script src="js/aiAssistant.js"></script>
