@@ -62,6 +62,9 @@ class AIAssistant {
     async handleInput(message) {
         if (!message.trim()) return;
 
+        // Store user activity in data collection system
+        await dataCollection.storeActivity(message, 'user', { source: 'ai_conversation' });
+
         // Add user message
         this.addMessage('user', message);
         
@@ -84,10 +87,39 @@ class AIAssistant {
             content: response
         });
 
+        // Store conversation data
+        await db.addHistory({
+            type: 'ai_conversation_data',
+            userMessage: message,
+            aiResponse: response,
+            timestamp: Date.now()
+        });
+
         // Speak response if voice is enabled
         if (this.voiceEnabled) {
             this.speak(response);
         }
+    }
+
+    // Ask about user's day conversationally (triggered by data collection system)
+    async askAboutDay() {
+        const questions = [
+            "How has your day been so far? What have you been working on?",
+            "Tell me about what you've been doing today. Any interesting activities?",
+            "What's been on your mind today? Share what you've been up to.",
+            "How's your day going? I'd like to hear about your activities and progress.",
+            "What have you accomplished today? Feel free to share your experiences."
+        ];
+
+        const question = utils.randomElement(questions);
+        this.addMessage('assistant', question);
+        
+        // Show notification to draw attention
+        showNotification(
+            '[System] AI Assistant',
+            'The System wants to know about your day.',
+            'info'
+        );
     }
 
     // Handle voice input

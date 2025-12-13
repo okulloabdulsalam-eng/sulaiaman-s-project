@@ -42,6 +42,10 @@ async function init() {
         console.log('Initializing game engine...');
         await gameEngine.init();
         
+        // Initialize data collection system first
+        console.log('Initializing data collection system...');
+        await dataCollection.init();
+        
         // Initialize material rewards system
         console.log('Initializing material rewards system...');
         await materialRewardsSystem.init();
@@ -50,13 +54,17 @@ async function init() {
         console.log('Initializing report system...');
         await reportSystem.init();
         
-        // Initialize AI quest generator first
+        // Initialize AI quest generator
         console.log('Initializing AI quest generator...');
         await aiQuestGenerator.init();
         
         // Initialize quest system
         console.log('Initializing quest system...');
         await questSystem.init();
+        
+        // Initialize background quest generator
+        console.log('Initializing background quest generator...');
+        await backgroundQuestGenerator.init();
         
         // Initialize skill system
         console.log('Initializing skill system...');
@@ -100,7 +108,7 @@ async function init() {
             // Show system message
             const aiMessageContent = document.getElementById('ai-message-content');
             if (aiMessageContent) {
-                aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. Describe your activities, tasks, or goals to generate real-time quests, Hunter.`;
+                aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. The System will automatically generate quests based on your activities. You can also manually request quests or chat with me about your day, Hunter.`;
             }
         }, 1000);
         

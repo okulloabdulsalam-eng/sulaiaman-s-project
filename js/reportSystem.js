@@ -38,6 +38,9 @@ class ReportSystem {
             throw new Error('Report cannot be empty');
         }
 
+        // Store report in data collection system
+        await dataCollection.storeReport(reportText, questId);
+
         const report = {
             id: utils.generateId(),
             type: 'quest_report',
@@ -57,7 +60,7 @@ class ReportSystem {
         this.pendingReports.push(report);
         await db.addHistory(report);
 
-        // Analyze report with AI
+        // Analyze report with AI (automatic)
         await this.analyzeReport(report.id);
 
         return report;
@@ -88,7 +91,7 @@ class ReportSystem {
             report.analysisDetails = analysisResult.details;
             
             if (analysisResult.verified) {
-                // Complete quest and award rewards
+                // Automatically complete quest and award rewards
                 const quest = questSystem.getQuest(report.questId);
                 if (quest) {
                     const completionData = {
@@ -97,6 +100,7 @@ class ReportSystem {
                         verified: true
                     };
                     
+                    // Automatically apply rewards
                     const rewards = await questSystem.completeQuestWithReport(
                         report.questId, 
                         completionData,
@@ -105,15 +109,10 @@ class ReportSystem {
                     
                     report.rewards = rewards;
                     
-                    // Show completion notification
-                    showNotification(
-                        '[System] Quest Verified',
-                        `Your report has been verified! Quest completed with ${analysisResult.quality} quality.`,
-                        'quest-complete'
-                    );
+                    // Automatic notification already shown by questSystem
                 }
             } else {
-                // Quest not verified
+                // Quest not verified - automatic notification
                 showNotification(
                     '[System] Report Rejected',
                     'Your report did not meet the quest requirements. Please try again or revise your approach.',
