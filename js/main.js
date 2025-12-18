@@ -25,6 +25,91 @@ function navigateTo(page) {
         skillSystem.renderSkillTree();
     } else if (page === 'stats') {
         gameEngine.updateStatsUI();
+        if (typeof statisticsDashboard !== 'undefined') {
+            statisticsDashboard.renderDashboard();
+        }
+    } else if (page === 'achievements') {
+        renderAchievementsPage();
+    }
+}
+
+// Render achievements page
+function renderAchievementsPage() {
+    // Render streak
+    if (typeof streakSystem !== 'undefined') {
+        const currentStreakEl = document.getElementById('current-streak');
+        const longestStreakEl = document.getElementById('longest-streak');
+        if (currentStreakEl) {
+            currentStreakEl.textContent = `${streakSystem.getCurrentStreak()} days 🔥`;
+        }
+        if (longestStreakEl) {
+            longestStreakEl.textContent = `${streakSystem.getLongestStreak()} days`;
+        }
+    }
+
+    // Render challenges
+    if (typeof dailyChallenges !== 'undefined') {
+        const dailyList = document.getElementById('daily-challenges-list');
+        if (dailyList) {
+            const challenges = dailyChallenges.getDailyChallenges();
+            dailyList.innerHTML = challenges.map(c => `
+                <div class="challenge-item ${c.completed ? 'completed' : ''}">
+                    <div class="challenge-title">${c.title}</div>
+                    <div class="challenge-description">${c.description}</div>
+                    <div class="challenge-progress">${c.progress}/${c.requirement.count}</div>
+                    <div class="challenge-reward">Reward: +${c.reward.xp} XP</div>
+                </div>
+            `).join('');
+        }
+
+        const weeklyList = document.getElementById('weekly-challenges-list');
+        if (weeklyList) {
+            const challenges = dailyChallenges.getWeeklyChallenges();
+            weeklyList.innerHTML = challenges.map(c => `
+                <div class="challenge-item ${c.completed ? 'completed' : ''}">
+                    <div class="challenge-title">${c.title}</div>
+                    <div class="challenge-description">${c.description}</div>
+                    <div class="challenge-progress">${c.progress}/${c.requirement.count}</div>
+                    <div class="challenge-reward">Reward: +${c.reward.xp} XP</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Render achievements
+    if (typeof achievementSystem !== 'undefined') {
+        const unlockedEl = document.getElementById('achievements-unlocked');
+        const lockedEl = document.getElementById('achievements-locked');
+        
+        if (unlockedEl) {
+            const unlocked = achievementSystem.getUnlockedAchievements();
+            unlockedEl.innerHTML = unlocked.map(a => `
+                <div class="achievement-item unlocked">
+                    <span class="achievement-icon">${a.icon}</span>
+                    <div class="achievement-info">
+                        <div class="achievement-name">${a.name}</div>
+                        <div class="achievement-description">${a.description}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        if (lockedEl) {
+            const locked = achievementSystem.getLockedAchievements();
+            lockedEl.innerHTML = locked.map(a => {
+                const progress = achievementSystem.getAchievementProgress(a.id);
+                return `
+                    <div class="achievement-item locked">
+                        <span class="achievement-icon">🔒</span>
+                        <div class="achievement-info">
+                            <div class="achievement-name">${a.name}</div>
+                            <div class="achievement-description">${a.description}</div>
+                            <div class="achievement-progress">${Math.floor(progress.progress)}%</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
     }
 }
 
@@ -94,6 +179,57 @@ async function init() {
         console.log('Initializing prayer times...');
         await prayerTimes.init();
         prayerTimes.renderPrayerTimes();
+        
+        // Initialize new systems
+        console.log('Initializing achievement system...');
+        if (typeof achievementSystem !== 'undefined') {
+            await achievementSystem.init();
+        }
+        
+        console.log('Initializing streak system...');
+        if (typeof streakSystem !== 'undefined') {
+            await streakSystem.init();
+        }
+        
+        console.log('Initializing statistics dashboard...');
+        if (typeof statisticsDashboard !== 'undefined') {
+            await statisticsDashboard.init();
+        }
+        
+        console.log('Initializing avatar evolution...');
+        if (typeof avatarEvolution !== 'undefined') {
+            avatarEvolution.updateAvatar();
+        }
+        
+        console.log('Initializing quest chains...');
+        if (typeof questChains !== 'undefined') {
+            await questChains.init();
+        }
+        
+        console.log('Initializing daily challenges...');
+        if (typeof dailyChallenges !== 'undefined') {
+            await dailyChallenges.init();
+        }
+        
+        console.log('Initializing enhanced history...');
+        if (typeof enhancedHistory !== 'undefined') {
+            await enhancedHistory.init();
+        }
+        
+        console.log('Initializing audio system...');
+        if (typeof audioSystem !== 'undefined') {
+            audioSystem.init();
+        }
+        
+        console.log('Initializing shadow monarch system...');
+        if (typeof shadowMonarch !== 'undefined') {
+            await shadowMonarch.checkEvolution();
+        }
+        
+        console.log('Initializing skill synergies...');
+        if (typeof skillSynergies !== 'undefined') {
+            skillSynergies.checkNewSynergy();
+        }
         
         // Setup event listeners
         setupEventListeners();

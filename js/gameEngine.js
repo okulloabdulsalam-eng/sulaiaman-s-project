@@ -119,6 +119,16 @@ class GameEngine {
                 oldRank, 
                 newRank: this.playerData.rank 
             });
+            
+            // Update avatar evolution
+            if (typeof avatarEvolution !== 'undefined') {
+                avatarEvolution.updateAvatar();
+            }
+            
+            // Check shadow monarch evolution
+            if (typeof shadowMonarch !== 'undefined') {
+                await shadowMonarch.checkEvolution();
+            }
         }
         
         this.triggerEvent('levelUp', { 
@@ -132,6 +142,16 @@ class GameEngine {
             `Congratulations! You reached level ${this.playerData.level}. You gained ${levels * 3} skill points!`,
             'level-up'
         );
+        
+        // Play sound
+        if (typeof audioSystem !== 'undefined') {
+            audioSystem.play('level_up');
+        }
+        
+        // Check achievements
+        if (typeof achievementSystem !== 'undefined') {
+            await achievementSystem.checkAchievements();
+        }
     }
 
     // Update rank based on total stats

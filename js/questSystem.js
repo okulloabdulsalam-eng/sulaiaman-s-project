@@ -188,6 +188,31 @@ class QuestSystem {
         // Show comprehensive reward notification
         this.showRewardNotification(quest, pointRewards, materialRewards);
         
+        // Mark activity for streak
+        if (typeof streakSystem !== 'undefined') {
+            await streakSystem.markActivity();
+        }
+        
+        // Check achievements
+        if (typeof achievementSystem !== 'undefined') {
+            await achievementSystem.checkAchievements();
+        }
+        
+        // Check quest chains
+        if (typeof questChains !== 'undefined') {
+            await questChains.checkChainProgress('knowledge_mastery');
+        }
+        
+        // Check challenges
+        if (typeof dailyChallenges !== 'undefined') {
+            await dailyChallenges.checkChallengeProgress();
+        }
+        
+        // Check evolution
+        if (typeof shadowMonarch !== 'undefined') {
+            await shadowMonarch.checkEvolution();
+        }
+        
         // Add to history
         await db.addHistory({
             type: 'quest_completed',
