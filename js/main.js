@@ -590,9 +590,56 @@ function setupEventListeners() {
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const page = btn.dataset.page;
-            navigateTo(page);
+            if (page) {
+                navigateTo(page);
+            }
         });
     });
+
+    // More menu button
+    const moreMenuBtn = document.getElementById('more-menu-btn');
+    const moreMenu = document.getElementById('more-menu');
+    const moreMenuClose = document.getElementById('more-menu-close');
+    const moreMenuOverlay = document.getElementById('more-menu-overlay');
+    
+    if (moreMenuBtn && moreMenu) {
+        moreMenuBtn.addEventListener('click', () => {
+            moreMenu.style.display = 'block';
+            setTimeout(() => {
+                moreMenu.classList.add('active');
+            }, 10);
+        });
+    }
+
+    if (moreMenuClose && moreMenu) {
+        moreMenuClose.addEventListener('click', closeMoreMenu);
+    }
+
+    if (moreMenuOverlay && moreMenu) {
+        moreMenuOverlay.addEventListener('click', closeMoreMenu);
+    }
+
+    // More menu items
+    document.querySelectorAll('.more-menu-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const page = btn.dataset.page;
+            if (page) {
+                closeMoreMenu();
+                navigateTo(page);
+            }
+        });
+    });
+}
+
+function closeMoreMenu() {
+    const moreMenu = document.getElementById('more-menu');
+    if (moreMenu) {
+        moreMenu.classList.remove('active');
+        setTimeout(() => {
+            moreMenu.style.display = 'none';
+        }, 300);
+    }
+}
     
     
     // Use skill points button

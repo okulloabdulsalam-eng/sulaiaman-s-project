@@ -295,6 +295,12 @@ p, span, div.message-content, .quest-description, .notification-content, .modal-
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.4);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.bottom-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-btn {

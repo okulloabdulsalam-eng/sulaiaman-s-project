@@ -72,23 +72,40 @@
                 <span class="nav-icon">🤖</span>
                 <span class="nav-label">AI</span>
             </button>
-            <button class="nav-btn" data-page="shop">
-                <span class="nav-icon">🛒</span>
-                <span class="nav-label">Shop</span>
-            </button>
-            <button class="nav-btn" data-page="inventory">
-                <span class="nav-icon">🎒</span>
-                <span class="nav-label">Inventory</span>
-            </button>
-            <button class="nav-btn" data-page="history">
-                <span class="nav-icon">📜</span>
-                <span class="nav-label">History</span>
-            </button>
-            <button class="nav-btn" data-page="settings">
-                <span class="nav-icon">⚙️</span>
-                <span class="nav-label">Settings</span>
+            <button class="nav-btn" id="more-menu-btn">
+                <span class="nav-icon">⋯</span>
+                <span class="nav-label">More</span>
             </button>
         </nav>
+
+        <!-- More Menu (Hidden by default) -->
+        <div id="more-menu" class="more-menu" style="display: none;">
+            <div class="more-menu-overlay" id="more-menu-overlay"></div>
+            <div class="more-menu-content">
+                <div class="more-menu-header">
+                    <h3>More Options</h3>
+                    <button class="more-menu-close" id="more-menu-close">&times;</button>
+                </div>
+                <div class="more-menu-items">
+                    <button class="more-menu-item" data-page="shop">
+                        <span class="more-menu-icon">🛒</span>
+                        <span class="more-menu-label">Shop</span>
+                    </button>
+                    <button class="more-menu-item" data-page="inventory">
+                        <span class="more-menu-icon">🎒</span>
+                        <span class="more-menu-label">Inventory</span>
+                    </button>
+                    <button class="more-menu-item" data-page="history">
+                        <span class="more-menu-icon">📜</span>
+                        <span class="more-menu-label">History</span>
+                    </button>
+                    <button class="more-menu-item" data-page="settings">
+                        <span class="more-menu-icon">⚙️</span>
+                        <span class="more-menu-label">Settings</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Dashboard Page -->
         <section id="page-dashboard" class="page active">
