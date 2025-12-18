@@ -224,7 +224,7 @@ class ReportSystem {
         };
     }
 
-    // Analyze knowledge-backed quest completion
+    // Analyze knowledge-backed quest completion - STRICT REAL-WORLD VERIFICATION
     async analyzeKnowledgeBackedQuest(report, quest) {
         const reportText = report.reportText.toLowerCase();
         const knowledgeSource = quest.knowledgeSource;
@@ -241,50 +241,75 @@ class ReportSystem {
             reportText.includes(word)
         ).length;
 
-        // Check for real-world application indicators
+        // STRICT: Check for real-world application indicators (must show actual action)
         const applicationIndicators = [
             'applied', 'used', 'implemented', 'practiced', 'executed',
-            'tried', 'tested', 'experimented', 'action', 'did', 'took'
+            'tried', 'tested', 'experimented', 'action', 'did', 'took',
+            'performed', 'completed', 'accomplished', 'carried out', 'did this',
+            'took action', 'made a move', 'actually did', 'in real life'
         ];
         const hasApplication = applicationIndicators.some(ind => reportText.includes(ind));
 
-        // Check for outcome/results
+        // STRICT: Check for specific real-world context
+        const contextIndicators = [
+            'at work', 'at school', 'with my', 'in my', 'during',
+            'when i', 'the person', 'the situation', 'the meeting',
+            'the conversation', 'the project', 'my team', 'my boss',
+            'my client', 'real', 'actual', 'concrete', 'specific'
+        ];
+        const hasRealContext = contextIndicators.some(ind => reportText.includes(ind));
+
+        // STRICT: Check for outcome/results (must show measurable outcome)
         const outcomeIndicators = [
             'result', 'outcome', 'achieved', 'gained', 'learned', 'improved',
-            'worked', 'helped', 'succeeded', 'benefited'
+            'worked', 'helped', 'succeeded', 'benefited', 'happened',
+            'changed', 'impact', 'effect', 'because', 'as a result',
+            'the result was', 'it worked', 'it didn\'t work', 'measured'
         ];
         const hasOutcome = outcomeIndicators.some(ind => reportText.includes(ind));
 
-        // Calculate score for knowledge-backed quest
-        if (principleMatches > 0) score += 40; // Principle recognition
-        if (hasApplication) score += 30; // Actual application
+        // STRICT: Check for reflection/learning
+        const reflectionIndicators = [
+            'learned', 'realized', 'discovered', 'understood', 'insight',
+            'reflection', 'takeaway', 'lesson', 'now i know', 'i see',
+            'i understand', 'this taught me'
+        ];
+        const hasReflection = reflectionIndicators.some(ind => reportText.includes(ind));
+
+        // Calculate score for knowledge-backed quest (STRICTER)
+        if (principleMatches > 0) score += 30; // Principle recognition
+        if (hasApplication) score += 40; // Actual application (higher weight)
+        if (hasRealContext) score += 30; // Real-world context (NEW - required)
         if (hasOutcome) score += 30; // Real-world results
-        if (reportText.length > 100) score += 20; // Detailed report
-        if (reportText.length > 200) score += 10; // Very detailed
+        if (hasReflection) score += 20; // Learning/reflection
+        if (reportText.length > 150) score += 15; // Detailed report
+        if (reportText.length > 300) score += 15; // Very detailed
 
         // Check for source/book mention (bonus)
         if (reportText.includes(knowledgeSource.sourceTitle.toLowerCase().split(' ')[0])) {
             score += 10;
         }
 
-        // Verification threshold - must show real application
-        verified = score >= 60 && hasApplication; // Higher threshold for knowledge quests
+        // STRICT Verification threshold - MUST show real application AND context
+        verified = score >= 70 && hasApplication && hasRealContext; // Higher threshold + context required
         
-        // Determine quality
-        if (score >= 120 && hasApplication && hasOutcome) {
+        // Determine quality (stricter)
+        if (score >= 130 && hasApplication && hasRealContext && hasOutcome && hasReflection) {
             quality = 'excellent';
-        } else if (score >= 90 && hasApplication) {
+        } else if (score >= 100 && hasApplication && hasRealContext && hasOutcome) {
             quality = 'good';
-        } else if (score >= 60) {
+        } else if (score >= 70 && hasApplication && hasRealContext) {
             quality = 'basic';
         }
 
         details.push(`Principle application detected: ${principleMatches > 0}`);
-        details.push(`Real-world action taken: ${hasApplication}`);
+        details.push(`Real-world action taken: ${hasApplication} (REQUIRED)`);
+        details.push(`Real-world context provided: ${hasRealContext} (REQUIRED)`);
         details.push(`Outcome reported: ${hasOutcome}`);
+        details.push(`Reflection/learning: ${hasReflection}`);
         details.push(`Report length: ${reportText.length} characters`);
         details.push(`Quality: ${quality}`);
-        details.push(`SYSTEM EVALUATED - Knowledge-backed quest verification`);
+        details.push(`SYSTEM EVALUATED - Real-world application verification (STRICT)`);
 
         return {
             verified,
@@ -293,7 +318,9 @@ class ReportSystem {
             details,
             principleMatches,
             hasApplication,
-            hasOutcome
+            hasRealContext,
+            hasOutcome,
+            hasReflection
         };
     }
 

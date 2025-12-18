@@ -30,6 +30,25 @@ function navigateTo(page) {
         }
     } else if (page === 'achievements') {
         renderAchievementsPage();
+    } else if (page === 'assistant') {
+        // Refresh AI journal entries when navigating to assistant page
+        if (typeof aiJournalSystem !== 'undefined') {
+            aiJournalSystem.renderJournalEntries();
+        }
+        if (typeof journalSearch !== 'undefined') {
+            journalSearch.applyFilters();
+        }
+    } else if (page === 'stats') {
+        // Refresh analytics and charts
+        if (typeof questAnalytics !== 'undefined') {
+            await questAnalytics.calculateAnalytics();
+            questAnalytics.renderDashboard('quest-analytics-dashboard');
+        }
+        if (typeof progressCharts !== 'undefined') {
+            await progressCharts.loadChartData();
+            progressCharts.renderXPChart('xp-chart-container');
+            progressCharts.renderQuestChart('quest-chart-container');
+        }
     }
 }
 
@@ -127,12 +146,19 @@ async function init() {
         console.log('Initializing knowledge engine...');
         if (typeof knowledgeEngine !== 'undefined') {
             await knowledgeEngine.init();
+            
+            // Initialize knowledge sync
+            if (typeof knowledgeSync !== 'undefined') {
+                await knowledgeSync.init();
+            }
+            
             // Cache sources for offline use
             await knowledgeEngine.cacheSources();
             
             // Verify coverage
             const coverage = knowledgeEngine.getCoverageReport();
             console.log('[Knowledge Engine] Coverage:', coverage);
+            console.log(`[Knowledge Engine] Total sources: ${knowledgeEngine.sources.length}`);
         }
         
         // Initialize game engine
@@ -231,6 +257,60 @@ async function init() {
             skillSynergies.checkNewSynergy();
         }
         
+        // Initialize AI Journal System
+        console.log('Initializing AI journal system...');
+        if (typeof aiJournalSystem !== 'undefined') {
+            await aiJournalSystem.init();
+        }
+        
+        // Initialize Pending Quest Delivery System
+        console.log('Initializing pending quest delivery system...');
+        if (typeof pendingQuestDelivery !== 'undefined') {
+            await pendingQuestDelivery.init();
+        }
+        
+        // Initialize Journal Search
+        console.log('Initializing journal search system...');
+        if (typeof journalSearch !== 'undefined') {
+            journalSearch.init();
+        }
+        
+        // Initialize Quest Analytics
+        console.log('Initializing quest analytics...');
+        if (typeof questAnalytics !== 'undefined') {
+            await questAnalytics.init();
+        }
+        
+        // Initialize Daily Reflection Prompts
+        console.log('Initializing daily reflection prompts...');
+        if (typeof dailyReflectionPrompts !== 'undefined') {
+            await dailyReflectionPrompts.init();
+        }
+        
+        // Initialize Progress Charts
+        console.log('Initializing progress charts...');
+        if (typeof progressCharts !== 'undefined') {
+            await progressCharts.init();
+        }
+        
+        // Initialize Smart Reminders
+        console.log('Initializing smart reminders...');
+        if (typeof smartReminders !== 'undefined') {
+            await smartReminders.init();
+        }
+        
+        // Initialize Quest Difficulty Adjustment
+        console.log('Initializing quest difficulty adjustment...');
+        if (typeof questDifficultyAdjustment !== 'undefined') {
+            await questDifficultyAdjustment.init();
+        }
+        
+        // Initialize Journal Achievements
+        console.log('Initializing journal achievements...');
+        if (typeof journalAchievements !== 'undefined') {
+            await journalAchievements.init();
+        }
+        
         // Setup event listeners
         setupEventListeners();
         
@@ -278,56 +358,6 @@ function setupEventListeners() {
         });
     });
     
-    // AI Quest Generation button
-    const generateQuestBtn = document.getElementById('btn-generate-quest-ai');
-    const questInputText = document.getElementById('quest-input-text');
-    
-    if (generateQuestBtn) {
-        generateQuestBtn.addEventListener('click', async () => {
-            const input = questInputText ? questInputText.value.trim() : '';
-            if (!input) {
-                showNotification('Input Required', 'Please describe your activity or goal to generate a quest.', 'info');
-                return;
-            }
-            
-            try {
-                await questSystem.generateQuestFromInput(input);
-                if (questInputText) {
-                    questInputText.value = '';
-                }
-            } catch (error) {
-                showNotification('Error', error.message || 'Failed to generate quest. Please try again.', 'info');
-            }
-        });
-    }
-    
-    // Quest input Enter key
-    if (questInputText) {
-        questInputText.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                generateQuestBtn.click();
-            }
-        });
-    }
-    
-    // Quest voice input button
-    const questVoiceBtn = document.getElementById('btn-quest-voice-input');
-    if (questVoiceBtn && questSystem.questVoiceRecognition) {
-        questVoiceBtn.addEventListener('click', () => {
-            if (questSystem.questVoiceRecognition) {
-                if (questSystem.questVoiceRecognition.running) {
-                    questSystem.questVoiceRecognition.stop();
-                    questVoiceBtn.textContent = '🎤 Voice';
-                } else {
-                    questSystem.questVoiceRecognition.start();
-                    questVoiceBtn.textContent = '🎤 Listening...';
-                }
-            } else {
-                showNotification('Voice Not Available', 'Voice recognition is not supported in your browser.', 'info');
-            }
-        });
-    }
     
     // Use skill points button
     const useSkillPointsBtn = document.getElementById('btn-use-skill-points');
@@ -337,27 +367,51 @@ function setupEventListeners() {
         });
     }
     
-    // AI Assistant input
-    const assistantInput = document.getElementById('assistant-input');
-    const sendMessageBtn = document.getElementById('btn-send-message');
+    // AI Journal System - Save entry button
+    const saveJournalBtn = document.getElementById('btn-save-journal-entry');
+    const journalInput = document.getElementById('ai-journal-input');
     
-    if (assistantInput) {
-        assistantInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
+    if (saveJournalBtn && typeof aiJournalSystem !== 'undefined') {
+        saveJournalBtn.addEventListener('click', async () => {
+            const text = journalInput ? journalInput.value.trim() : '';
+            if (text) {
+                await aiJournalSystem.saveJournalEntry(text);
             }
         });
     }
     
-    if (sendMessageBtn) {
-        sendMessageBtn.addEventListener('click', sendMessage);
+    // AI Journal System - Enter key
+    if (journalInput) {
+        journalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                e.preventDefault();
+                if (saveJournalBtn) {
+                    saveJournalBtn.click();
+                }
+            }
+        });
     }
     
-    // Voice toggle button
-    const voiceToggleBtn = document.getElementById('btn-voice-toggle');
-    if (voiceToggleBtn) {
-        voiceToggleBtn.addEventListener('click', () => {
-            aiAssistant.toggleVoice();
+    // AI Journal System - Voice input (online only)
+    const voiceRecordBtn = document.getElementById('btn-ai-voice-record');
+    if (voiceRecordBtn && typeof aiJournalSystem !== 'undefined') {
+        voiceRecordBtn.addEventListener('click', () => {
+            if (!aiJournalSystem.isOnline) {
+                showNotification('Voice Unavailable', 'Voice input is only available when online.', 'info');
+                return;
+            }
+            
+            if (aiJournalSystem.voiceRecognition) {
+                if (aiJournalSystem.voiceRecognition.running) {
+                    aiJournalSystem.voiceRecognition.stop();
+                    aiJournalSystem.updateVoiceButton(false);
+                } else {
+                    aiJournalSystem.voiceRecognition.start();
+                    aiJournalSystem.updateVoiceButton(true);
+                }
+            } else {
+                showNotification('Voice Not Available', 'Voice recognition is not supported in your browser.', 'info');
+            }
         });
     }
     

@@ -4,7 +4,7 @@
 class Database {
     constructor() {
         this.dbName = 'SoloLevelingDB';
-        this.version = 3; // Incremented for new features
+        this.version = 4; // Incremented for AI journal system
         this.db = null;
     }
 
@@ -82,6 +82,27 @@ class Database {
                 if (!db.objectStoreNames.contains('statSnapshots')) {
                     const snapshotStore = db.createObjectStore('statSnapshots', { keyPath: 'timestamp' });
                     snapshotStore.createIndex('timestamp', 'timestamp', { unique: false });
+                }
+
+                // AI Journal entries store
+                if (!db.objectStoreNames.contains('aiJournalEntries')) {
+                    const journalStore = db.createObjectStore('aiJournalEntries', { keyPath: 'id', autoIncrement: true });
+                    journalStore.createIndex('timestamp', 'timestamp', { unique: false });
+                    journalStore.createIndex('analyzed', 'analyzed', { unique: false });
+                }
+
+                // AI Memory store (user profile, insights, patterns)
+                if (!db.objectStoreNames.contains('aiMemory')) {
+                    const memoryStore = db.createObjectStore('aiMemory', { keyPath: 'id' });
+                    memoryStore.createIndex('type', 'type', { unique: false });
+                }
+
+                // Pending quests store (quests generated from journal analysis)
+                if (!db.objectStoreNames.contains('pendingQuests')) {
+                    const pendingStore = db.createObjectStore('pendingQuests', { keyPath: 'id', autoIncrement: true });
+                    pendingStore.createIndex('priority', 'priority', { unique: false });
+                    pendingStore.createIndex('readyToDeliver', 'readyToDeliver', { unique: false });
+                    pendingStore.createIndex('timestamp', 'timestamp', { unique: false });
                 }
             };
         });
@@ -281,6 +302,46 @@ class Database {
             request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve();
         });
+    }
+
+    // AI Journal methods
+    async saveJournalEntry(entry) {
+        return this.put('aiJournalEntries', entry);
+    }
+
+    async getJournalEntries(limit = 100) {
+        const all = await this.getAll('aiJournalEntries');
+        return all.sort((a, b) => b.timestamp - a.timestamp).slice(0, limit);
+    }
+
+    async getUnanalyzedEntries() {
+        return this.getByIndex('aiJournalEntries', 'analyzed', false);
+    }
+
+    // AI Memory methods
+    async saveMemory(memory) {
+        return this.put('aiMemory', memory);
+    }
+
+    async getMemory(id = 'main') {
+        return this.get('aiMemory', id);
+    }
+
+    // Pending Quests methods
+    async savePendingQuest(pendingQuest) {
+        return this.put('pendingQuests', pendingQuest);
+    }
+
+    async getPendingQuests() {
+        return this.getAll('pendingQuests') || [];
+    }
+
+    async getReadyToDeliverQuests() {
+        return this.getByIndex('pendingQuests', 'readyToDeliver', true);
+    }
+
+    async deletePendingQuest(id) {
+        return this.delete('pendingQuests', id);
     }
 }
 

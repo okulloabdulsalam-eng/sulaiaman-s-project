@@ -183,8 +183,21 @@ class AIQuestGenerator {
         // Generate quest description
         const description = this.generateQuestDescription(originalInput, context);
         
+        // Apply difficulty adjustment if available
+        let adjustedDifficulty = context.difficulty;
+        let difficultyAdjustment = null;
+        if (typeof questDifficultyAdjustment !== 'undefined') {
+            difficultyAdjustment = questDifficultyAdjustment.adjustQuestDifficulty(context.difficulty, context);
+            adjustedDifficulty = difficultyAdjustment.difficulty;
+        }
+
         // Calculate rewards based on difficulty and level
-        const rewards = this.calculateRewards(primaryCategory, context.difficulty, level, context);
+        const rewards = this.calculateRewards(primaryCategory, adjustedDifficulty, level, context);
+        
+        // Apply adjusted XP if difficulty was adjusted
+        if (difficultyAdjustment && difficultyAdjustment.xp) {
+            rewards.xp = difficultyAdjustment.xp;
+        }
 
         const quest = {
             id: utils.generateId(),
@@ -192,7 +205,7 @@ class AIQuestGenerator {
             description: description,
             category: primaryCategory,
             questType: 'ai_generated',
-            difficulty: context.difficulty,
+            difficulty: adjustedDifficulty,
             timeFrame: context.timeFrame,
             xp: rewards.xp,
             stats: rewards.stats,

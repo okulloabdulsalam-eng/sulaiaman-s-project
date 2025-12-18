@@ -166,34 +166,6 @@
                     <h2 class="page-title">Quests</h2>
                 </div>
 
-                <!-- AI Quest Generator Input -->
-                <div class="glass-panel ai-quest-input-panel">
-                    <h3 class="panel-title">Request Quest (Optional)</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
-                        The System automatically generates quests based on your activities. You can also manually request a quest here by describing what you're doing or planning.
-                    </p>
-                    <div class="quest-input-container">
-                        <textarea 
-                            id="quest-input-text" 
-                            class="quest-input-text" 
-                            placeholder="e.g., I need to negotiate a better deal with a new client today, or I want to finish studying 2 chapters for my exam..."
-                            rows="3"
-                        ></textarea>
-                        <div class="quest-input-actions">
-                            <button id="btn-quest-voice-input" class="btn-secondary" style="width: auto; margin: 0;">
-                                <span style="margin-right: 0.5rem;">🎤</span> Voice
-                            </button>
-                            <button id="btn-generate-quest-ai" class="btn-primary" style="flex: 1; margin: 0;">
-                                Generate Quest
-                            </button>
-                        </div>
-                    </div>
-                    <div id="quest-generation-status" class="quest-generation-status" style="display: none;">
-                        <div class="loading-spinner" style="width: 20px; height: 20px; margin-right: 0.5rem;"></div>
-                        <span>Analyzing your input and generating quest...</span>
-                    </div>
-                </div>
-
                 <div id="quests-container" class="quests-container">
                     <!-- Quests will be dynamically loaded here -->
                 </div>
@@ -293,6 +265,13 @@
                         <span>Next: <span id="next-rank-display" class="rank-D">D</span></span>
                     </div>
                 </div>
+
+                <!-- Quest Analytics Dashboard -->
+                <div id="quest-analytics-dashboard"></div>
+
+                <!-- Progress Charts -->
+                <div id="xp-chart-container" style="margin-top: 1rem;"></div>
+                <div id="quest-chart-container" style="margin-top: 1rem;"></div>
             </div>
         </section>
 
@@ -300,22 +279,89 @@
         <section id="page-assistant" class="page">
             <div class="page-content">
                 <div class="page-header">
-                    <h2 class="page-title">AI Assistant</h2>
-                    <button id="btn-voice-toggle" class="btn-secondary">Voice: OFF</button>
+                    <h2 class="page-title">AI Memory & Journal</h2>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <span id="ai-online-status" class="status-badge" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; background: var(--bg-secondary);">
+                            <span id="ai-status-indicator" style="color: #ef4444;">●</span> 
+                            <span id="ai-status-text">Offline</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">Share Your Life</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                        Tell me about your day, life experiences, goals, challenges, or anything you want me to remember. 
+                        I'll analyze this information to help you level up through personalized quests.
+                    </p>
+                </div>
+
+                <!-- Journal Search & Filters -->
+                <div class="glass-panel" style="margin-bottom: 1rem; padding: 1rem;">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                        <input 
+                            type="text" 
+                            id="journal-search-input" 
+                            placeholder="Search entries..." 
+                            style="flex: 1; min-width: 200px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                        >
+                        <select id="journal-filter-category" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                            <option value="">All Categories</option>
+                            <option value="career">Career</option>
+                            <option value="learning">Learning</option>
+                            <option value="health">Health</option>
+                            <option value="finance">Finance</option>
+                            <option value="social">Social</option>
+                            <option value="personal_growth">Personal Growth</option>
+                            <option value="challenges">Challenges</option>
+                        </select>
+                        <select id="journal-filter-sentiment" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                            <option value="">All Sentiments</option>
+                            <option value="positive">Positive</option>
+                            <option value="negative">Negative</option>
+                            <option value="neutral">Neutral</option>
+                        </select>
+                        <select id="journal-filter-analyzed" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                            <option value="">All Entries</option>
+                            <option value="true">Analyzed</option>
+                            <option value="false">Pending</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button id="btn-journal-clear-filters" class="btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                            Clear Filters
+                        </button>
+                        <span id="journal-search-results-count" style="color: var(--text-secondary); font-size: 0.85rem; align-self: center; margin-left: auto;">
+                            Showing all entries
+                        </span>
+                    </div>
                 </div>
 
                 <div class="assistant-container">
-                    <div id="assistant-messages" class="assistant-messages">
-                        <div class="message system-message">
-                            <div class="message-content">
-                                Hello, Hunter. I am your AI assistant. How can I help you today?
-                            </div>
-                        </div>
+                    <div id="ai-journal-entries" class="journal-entries-container" style="max-height: calc(100vh - 500px); overflow-y: auto; margin-bottom: 1rem;">
+                        <!-- Journal entries will be displayed here -->
                     </div>
 
-                    <div class="assistant-input-container">
-                        <input type="text" id="assistant-input" class="assistant-input" placeholder="Ask me anything...">
-                        <button id="btn-send-message" class="btn-send">Send</button>
+                    <div class="assistant-input-container" style="position: sticky; bottom: 0; background: var(--bg-primary); padding: 1rem; border-top: 1px solid var(--border-color);">
+                        <textarea 
+                            id="ai-journal-input" 
+                            class="assistant-input" 
+                            placeholder="Share your thoughts, experiences, goals, challenges... (Works offline)"
+                            rows="3"
+                            style="resize: vertical; min-height: 80px; font-family: inherit; width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                        ></textarea>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                            <button id="btn-ai-voice-record" class="btn-secondary" style="flex: 0 0 auto; display: none;">
+                                <span style="margin-right: 0.5rem;">🎤</span> Voice
+                            </button>
+                            <button id="btn-save-journal-entry" class="btn-primary" style="flex: 1;">
+                                Save Entry
+                            </button>
+                        </div>
+                        <div id="ai-analysis-status" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 8px; color: var(--text-secondary); font-size: 0.9rem;">
+                            <div class="loading-spinner" style="width: 16px; height: 16px; margin-right: 0.5rem; display: inline-block;"></div>
+                            <span>Analyzing your entry and generating insights...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -342,9 +388,11 @@
     <script src="js/dataCollection.js"></script>
     <!-- Knowledge Engine System -->
     <script src="js/knowledgeSources.js"></script>
+    <script src="js/knowledgeSourcesExtended.js"></script>
     <script src="js/knowledgeIndex.js"></script>
     <script src="js/knowledgeQuestTranslator.js"></script>
     <script src="js/knowledgeEngine.js"></script>
+    <script src="js/knowledgeSync.js"></script>
     <script src="js/knowledgeVerification.js"></script>
     <script src="js/knowledgeReader.js"></script>
     <!-- Quest Generation -->
@@ -355,6 +403,17 @@
     <script src="js/questSystem.js"></script>
     <script src="js/questChains.js"></script>
     <script src="js/dailyChallenges.js"></script>
+    <!-- AI Journal & Memory System -->
+    <script src="js/aiJournalSystem.js"></script>
+    <script src="js/pendingQuestDelivery.js"></script>
+    <script src="js/journalSearch.js"></script>
+    <!-- New Features -->
+    <script src="js/questAnalytics.js"></script>
+    <script src="js/dailyReflectionPrompts.js"></script>
+    <script src="js/progressCharts.js"></script>
+    <script src="js/smartReminders.js"></script>
+    <script src="js/questDifficultyAdjustment.js"></script>
+    <script src="js/journalAchievements.js"></script>
     <!-- Skills & Stats -->
     <script src="js/skillSystem.js"></script>
     <script src="js/skillSynergies.js"></script>

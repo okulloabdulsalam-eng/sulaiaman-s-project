@@ -66,9 +66,9 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Identify the most influential leverage point in your current environment and take one real action to influence it',
-                'Map out your competitive landscape: who are your main competitors and what are their weaknesses?',
-                'Find one situation where you can win without direct confrontation this week'
+                'REAL-WORLD ACTION: Identify ONE specific leverage point in your current environment (workplace, school, community, or home). Write down: (1) What makes it a leverage point, (2) One concrete action you will take this week to influence it, (3) How you\'ll measure the impact. Then execute the action and document the result.',
+                'REAL-WORLD ACTION: Map your competitive landscape for ONE real situation (job search, business competition, academic competition, etc.). Identify: (1) Your position, (2) Your competitors\' positions, (3) One strategic move you can make. Execute the move and report results.',
+                'REAL-WORLD ACTION: Find ONE real situation this week where you can achieve your goal without direct confrontation. Document: (1) The situation, (2) Your strategy, (3) The action taken, (4) The outcome.'
             ]
         });
 
@@ -92,8 +92,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Practice one skill from a different domain than your expertise this week',
-                'Identify three patterns in your environment that others miss'
+                'REAL-WORLD ACTION: Choose ONE skill from a different domain than your expertise. This week: (1) Learn the basics, (2) Practice it in a real situation, (3) Document what you learned and how it changed your perspective.',
+                'REAL-WORLD ACTION: Identify THREE specific patterns in your environment that others miss. Document: (1) Each pattern, (2) Why others miss it, (3) How you can use this insight, (4) One action you\'ll take based on each pattern.'
             ]
         });
 
@@ -110,8 +110,8 @@ class KnowledgeSources {
                 { name: 'Center of gravity', description: 'Identify the enemy\'s critical weakness' }
             ],
             exercises: [
-                'Identify the center of gravity in a current challenge you face',
-                'List three potential frictions that could derail your plan and prepare contingencies'
+                'REAL-WORLD ACTION: Identify the center of gravity in ONE current challenge you face. Document: (1) The challenge, (2) The center of gravity (critical weakness/strength), (3) One action targeting it, (4) Execute and report results.',
+                'REAL-WORLD ACTION: For ONE real plan you\'re executing, list three potential frictions that could derail it. For each: (1) Describe the friction, (2) Create a contingency plan, (3) Document which frictions actually occurred and how you handled them.'
             ]
         });
 
@@ -135,8 +135,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Write a strategy kernel for your most important current goal',
-                'Identify one leverage point where you can concentrate effort for maximum impact'
+                'REAL-WORLD ACTION: Write a strategy kernel for your most important current goal. Document: (1) Diagnosis: What is the challenge? (2) Guiding Policy: How will you approach it? (3) Coherent Actions: What are 3 specific steps? Then execute the first action and report results.',
+                'REAL-WORLD ACTION: Identify ONE leverage point where you can concentrate effort for maximum impact. Document: (1) The leverage point, (2) Why it\'s high-leverage, (3) The concentrated effort you\'ll make, (4) Execute and measure the impact.'
             ]
         });
 
@@ -153,8 +153,8 @@ class KnowledgeSources {
                 { name: 'Create a sense of urgency', description: 'Use time pressure strategically' }
             ],
             exercises: [
-                'Identify your three main obstacles and declare "war" on one this week',
-                'Find one situation where you\'re using outdated tactics and update your approach'
+                'REAL-WORLD ACTION: Identify your three main obstacles in ONE real situation. Declare "war" on one this week. Document: (1) The three obstacles, (2) Which one you\'re targeting, (3) Your strategy, (4) The actions you take, (5) The results.',
+                'REAL-WORLD ACTION: Find ONE real situation where you\'re using outdated tactics. Document: (1) The situation, (2) Your current tactics, (3) Why they\'re outdated, (4) Your updated approach, (5) Implement and report results.'
             ]
         });
 
@@ -171,8 +171,8 @@ class KnowledgeSources {
                 { name: 'Feedback loops', description: 'Understand reinforcing and balancing loops' }
             ],
             exercises: [
-                'Map one system in your life showing feedback loops',
-                'Identify the highest leverage point in a system you interact with daily'
+                'REAL-WORLD ACTION: Map ONE real system in your life (work system, family system, community system) showing feedback loops. Document: (1) The system components, (2) The reinforcing loops, (3) The balancing loops, (4) How they interact, (5) One intervention you\'ll make and its results.',
+                'REAL-WORLD ACTION: Identify the highest leverage point in ONE system you interact with daily. Document: (1) The system, (2) The leverage point, (3) Why it\'s high-leverage, (4) One action you\'ll take, (5) Execute and measure the impact.'
             ]
         });
 
@@ -196,8 +196,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Apply four actions framework to a current project or goal',
-                'Identify one "blue ocean" opportunity in your field'
+                'REAL-WORLD ACTION: Choose ONE current project or goal. Apply the four actions framework: (1) What can you eliminate? (2) What can you reduce? (3) What can you raise? (4) What can you create? Document your answers, implement one change, and report the result.',
+                'REAL-WORLD ACTION: Identify ONE "blue ocean" opportunity in your field (work, business, career, etc.). Document: (1) The opportunity, (2) Why it\'s uncontested, (3) One action you\'ll take to pursue it, (4) Execute and report results.'
             ]
         });
 
@@ -214,8 +214,8 @@ class KnowledgeSources {
                 { name: 'Sustainable competitive advantage', description: 'Build defensible positions' }
             ],
             exercises: [
-                'Analyze your value chain: what activities create most value?',
-                'Determine which generic strategy fits your current situation'
+                'REAL-WORLD ACTION: Analyze your value chain for ONE real situation (your job, business, or project). Document: (1) All activities, (2) Which create most value, (3) One way to optimize the highest-value activity, (4) Implement the optimization and report results.',
+                'REAL-WORLD ACTION: Determine which generic strategy (cost leadership, differentiation, or focus) fits your current situation. Document: (1) Your situation, (2) Your chosen strategy, (3) Three specific actions aligned with it, (4) Execute one action and report results.'
             ]
         });
 
@@ -232,8 +232,8 @@ class KnowledgeSources {
                 { name: 'Strategy as pattern', description: 'Strategy is consistency in behavior' }
             ],
             exercises: [
-                'Identify which strategy school best describes your approach',
-                'Find one example of emergent strategy in your recent actions'
+                'REAL-WORLD ACTION: Identify which strategy school best describes your approach to ONE real situation. Document: (1) The situation, (2) Your strategy school, (3) How it applies, (4) One way to improve your strategic approach based on this understanding.',
+                'REAL-WORLD ACTION: Find ONE example of emergent strategy in your recent actions. Document: (1) What you planned, (2) What actually emerged, (3) How the emergent strategy worked, (4) What you learned about strategy formation.'
             ]
         });
 
@@ -257,8 +257,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Create OKRs for your next quarter',
-                'Set one stretch objective with 3 measurable key results'
+                'REAL-WORLD ACTION: Create OKRs for your next quarter (work, personal, or project). Document: (1) 3-5 objectives, (2) 3-5 key results per objective, (3) How you\'ll measure them, (4) Share with someone for accountability, (5) Track progress weekly.',
+                'REAL-WORLD ACTION: Set ONE stretch objective with 3 measurable key results. Document: (1) The objective, (2) The 3 key results, (3) Your baseline, (4) Your target (60-70% achievement goal), (5) Start tracking immediately and report progress.'
             ]
         });
 
@@ -275,8 +275,8 @@ class KnowledgeSources {
                 { name: 'Nash equilibrium', description: 'Find stable outcomes' }
             ],
             exercises: [
-                'Analyze one interaction this week using game theory principles',
-                'Identify a dominant strategy in a current situation'
+                'REAL-WORLD ACTION: Analyze ONE real interaction this week (negotiation, decision, conflict) using game theory principles. Document: (1) The interaction, (2) The players and their goals, (3) The game theory analysis, (4) Your strategy, (5) The outcome and what you learned.',
+                'REAL-WORLD ACTION: Identify a dominant strategy in ONE current situation. Document: (1) The situation, (2) Your options, (3) The dominant strategy, (4) Why it\'s dominant, (5) Execute it and report the result.'
             ]
         });
     }
@@ -295,8 +295,8 @@ class KnowledgeSources {
                 { name: 'Clinical correlation', description: 'Connect anatomy to clinical presentation' }
             ],
             exercises: [
-                'Study one body system and identify its key structures and functions',
-                'Correlate one anatomical structure to a clinical condition you encounter'
+                'REAL-WORLD ACTION: Study ONE body system relevant to a real case you\'re working with. Document: (1) The body system, (2) Key structures and functions, (3) How it relates to your case, (4) One clinical application, (5) How this knowledge improved your understanding.',
+                'REAL-WORLD ACTION: Correlate ONE anatomical structure to a real clinical condition you encounter. Document: (1) The structure, (2) The condition, (3) The correlation, (4) How this understanding affects diagnosis/treatment, (5) Apply this knowledge in your practice.'
             ]
         });
 
@@ -320,8 +320,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Practice generating differential diagnoses for common presentations',
-                'Apply SOAP framework to analyze one case'
+                'REAL-WORLD ACTION: Practice generating differential diagnoses for ONE real patient presentation. Document: (1) The presentation, (2) Your differential list (minimum 3), (3) Your reasoning for each, (4) Your working diagnosis, (5) The outcome and what you learned.',
+                'REAL-WORLD ACTION: Apply SOAP framework to analyze ONE real case. Document: (1) Subjective: Patient history, (2) Objective: Physical exam and labs, (3) Assessment: Your diagnosis, (4) Plan: Treatment plan, (5) Follow-up: Results and reflection.'
             ]
         });
 
@@ -345,8 +345,8 @@ class KnowledgeSources {
                 }
             ],
             exercises: [
-                'Formulate one clinical question using PICO',
-                'Critically appraise one research paper this week'
+                'REAL-WORLD ACTION: Formulate ONE real clinical question using PICO from a case you\'re working on. Document: (1) Patient/Population, (2) Intervention, (3) Comparison, (4) Outcome, (5) Search for evidence, (6) Apply findings to your case.',
+                'REAL-WORLD ACTION: Critically appraise ONE research paper relevant to a real case. Document: (1) The paper, (2) Your critical appraisal, (3) Strengths and weaknesses, (4) How it applies to your case, (5) Your decision on using this evidence.'
             ]
         });
 
@@ -363,8 +363,8 @@ class KnowledgeSources {
                 { name: 'Differential diagnosis', description: 'Consider multiple possibilities' }
             ],
             exercises: [
-                'Apply systematic diagnostic approach to one patient case',
-                'Create differential diagnosis for a common presentation'
+                'REAL-WORLD ACTION: Apply systematic diagnostic approach to ONE real patient case. Document: (1) The case, (2) Your systematic approach, (3) Each step you took, (4) Your diagnostic reasoning, (5) The outcome and accuracy of your approach.',
+                'REAL-WORLD ACTION: Create differential diagnosis for ONE real common presentation you see. Document: (1) The presentation, (2) Your differential (at least 5 possibilities), (3) Your reasoning, (4) How you narrowed it down, (5) Final diagnosis and outcome.'
             ]
         });
 
@@ -380,8 +380,8 @@ class KnowledgeSources {
                 { name: 'Tissue response', description: 'Understand cellular and tissue responses' }
             ],
             exercises: [
-                'Study one disease mechanism and explain it clearly',
-                'Correlate pathology findings with clinical presentation'
+                'REAL-WORLD ACTION: Study ONE disease mechanism relevant to a real case. Document: (1) The disease, (2) The mechanism, (3) How it explains the patient\'s symptoms, (4) How this understanding affects treatment, (5) Explain it to someone (patient/colleague) and document their understanding.',
+                'REAL-WORLD ACTION: Correlate pathology findings with ONE real clinical presentation. Document: (1) The clinical presentation, (2) The pathology findings, (3) The correlation, (4) How this improves diagnosis/treatment, (5) Apply this correlation in your practice.'
             ]
         });
 
@@ -397,8 +397,8 @@ class KnowledgeSources {
                 { name: 'Clinical correlation', description: 'Correlate findings with history' }
             ],
             exercises: [
-                'Practice one physical examination technique this week',
-                'Document findings and correlate with patient history'
+                'REAL-WORLD ACTION: Practice ONE physical examination technique on a real patient this week. Document: (1) The technique, (2) The patient context, (3) Your findings, (4) What you learned, (5) How you\'ll improve your technique.',
+                'REAL-WORLD ACTION: Document findings from ONE real patient examination and correlate with their history. Document: (1) Patient history, (2) Physical exam findings, (3) The correlation, (4) How it informed your diagnosis, (5) The outcome and what you learned.'
             ]
         });
 
@@ -422,8 +422,8 @@ class KnowledgeSources {
                     { name: `${source.focus} principle`, description: `Apply ${source.focus} in practice` }
                 ],
                 exercises: [
-                    `Apply ${source.focus} in one clinical situation`,
-                    'Document the application and outcome'
+                    `REAL-WORLD ACTION: Apply ${source.focus} in ONE real clinical situation. Document: (1) The situation, (2) How you applied ${source.focus}, (3) The specific actions taken, (4) The outcome observed, (5) What you learned.`,
+                    `REAL-WORLD ACTION: Use ${source.focus} to improve ONE real clinical process. Document: (1) The current process, (2) How ${source.focus} applies, (3) The changes you make, (4) The results, (5) Your reflection.`
                 ]
             });
         });
@@ -443,8 +443,8 @@ class KnowledgeSources {
                 { name: 'Make money work for you', description: 'Build income-generating assets' }
             ],
             exercises: [
-                'Audit your personal balance sheet: list all assets and liabilities',
-                'Identify one new income-generating asset you can acquire this month'
+                'REAL-WORLD ACTION: Audit your personal balance sheet. Document: (1) All assets (things that put money in your pocket), (2) All liabilities (things that take money out), (3) Your net position, (4) One action to increase assets or decrease liabilities, (5) Execute and track the change.',
+                'REAL-WORLD ACTION: Identify ONE new income-generating asset you can acquire this month. Document: (1) The asset, (2) How it generates income, (3) The cost/effort to acquire it, (4) Your plan to acquire it, (5) Take the first step and report progress.'
             ]
         });
 
@@ -461,8 +461,8 @@ class KnowledgeSources {
                 { name: 'Long-term perspective', description: 'Invest for the long term' }
             ],
             exercises: [
-                'Calculate margin of safety for one investment opportunity',
-                'Practice ignoring market noise for one week'
+                'REAL-WORLD ACTION: Calculate margin of safety for ONE real investment opportunity. Document: (1) The investment, (2) Your estimate of intrinsic value, (3) Current market price, (4) Margin of safety calculation, (5) Your decision and reasoning, (6) Track the outcome.',
+                'REAL-WORLD ACTION: Practice ignoring market noise for one week. Document: (1) What market noise you normally pay attention to, (2) How you\'ll ignore it this week, (3) Your investment decisions during the week, (4) How ignoring noise affected your decisions, (5) What you learned about emotional investing.'
             ]
         });
 
@@ -479,8 +479,8 @@ class KnowledgeSources {
                 { name: 'Unintended consequences', description: 'Policies have ripple effects' }
             ],
             exercises: [
-                'Analyze one economic decision considering both seen and unseen effects',
-                'Identify unintended consequences of a recent policy or decision'
+                'REAL-WORLD ACTION: Analyze ONE real economic decision you\'re making (purchase, investment, career choice, etc.) considering both seen and unseen effects. Document: (1) The decision, (2) Seen effects, (3) Unseen effects, (4) Long-term consequences, (5) Your final decision and reasoning.',
+                'REAL-WORLD ACTION: Identify unintended consequences of ONE recent policy or decision (personal, work, or public). Document: (1) The policy/decision, (2) Intended effects, (3) Unintended consequences you observe, (4) How to account for these in future decisions, (5) One action you\'ll take based on this insight.'
             ]
         });
 
@@ -497,8 +497,8 @@ class KnowledgeSources {
                 { name: 'Systematic decision making', description: 'Use principles and algorithms' }
             ],
             exercises: [
-                'Write down 5 principles you use for decision making',
-                'Practice radical transparency in one important conversation'
+                'REAL-WORLD ACTION: Write down 5 principles you use for decision making. Then apply them to ONE real decision this week. Document: (1) Your 5 principles, (2) The decision, (3) How each principle applied, (4) Your decision process, (5) The outcome and whether your principles served you well.',
+                'REAL-WORLD ACTION: Practice radical transparency in ONE important conversation. Document: (1) Who you talked to, (2) What you were transparent about, (3) How you expressed it, (4) Their reaction, (5) The outcome and what you learned about transparency.'
             ]
         });
 
@@ -514,8 +514,8 @@ class KnowledgeSources {
                 { name: 'Data reveals truth', description: 'Use data to understand behavior' }
             ],
             exercises: [
-                'Identify one incentive structure in your environment and analyze its effects',
-                'Use data to analyze one economic behavior pattern'
+                'REAL-WORLD ACTION: Identify ONE real incentive structure in your environment (work, school, community). Document: (1) The incentive structure, (2) How people respond to it, (3) Intended vs. actual effects, (4) One way to improve it, (5) If possible, suggest the improvement and track results.',
+                'REAL-WORLD ACTION: Use real data to analyze ONE economic behavior pattern you observe. Document: (1) The behavior, (2) The data you collected, (3) Your analysis, (4) Your insights, (5) One action you\'ll take based on this understanding.'
             ]
         });
 
@@ -531,8 +531,8 @@ class KnowledgeSources {
                 { name: 'Nudges', description: 'Small changes that influence behavior' }
             ],
             exercises: [
-                'Design one "nudge" to improve a decision in your life',
-                'Apply choice architecture to one situation'
+                'REAL-WORLD ACTION: Design ONE "nudge" to improve a real decision in your life. Document: (1) The decision, (2) Your nudge design, (3) How you\'ll implement it, (4) Execute the nudge, (5) Measure if it improved the decision and report results.',
+                'REAL-WORLD ACTION: Apply choice architecture to ONE real situation. Document: (1) The situation, (2) Current choice structure, (3) Your redesigned architecture, (4) Implement it, (5) Observe how it affects decisions and report results.'
             ]
         });
 
@@ -556,29 +556,128 @@ class KnowledgeSources {
                     { name: `${source.focus} principle`, description: `Understand ${source.focus}` }
                 ],
                 exercises: [
-                    `Apply ${source.focus} to analyze one economic situation`
+                    `REAL-WORLD ACTION: Apply ${source.focus} to analyze ONE real economic situation affecting you. Document: (1) The situation, (2) Your analysis using ${source.focus}, (3) Your insights, (4) One action you'll take, (5) Execute and report results.`
                 ]
             });
         });
     }
 
     addFinanceSources() {
-        // Additional Finance Sources (10+)
-        for (let i = 1; i <= 10; i++) {
+        // The Intelligent Investor (already added in economics, but adding detailed version here)
+        // A Random Walk Down Wall Street
+        this.sources.push({
+            id: 'random-walk',
+            title: 'A Random Walk Down Wall Street',
+            author: 'Burton Malkiel',
+            domain: 'finance',
+            keywords: ['investing', 'efficient market', 'index funds', 'diversification'],
+            principles: [
+                { name: 'Efficient market hypothesis', description: 'Markets reflect all available information' },
+                { name: 'Index fund investing', description: 'Low-cost index funds outperform active management' },
+                { name: 'Diversification', description: 'Spread risk across many investments' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Analyze your current investment strategy. Document: (1) Your current approach, (2) How it aligns with index investing, (3) One change you\'ll make, (4) Execute it, (5) Track performance and report results.',
+                'REAL-WORLD ACTION: Review your portfolio diversification. Document: (1) Your current holdings, (2) Diversification analysis, (3) Gaps identified, (4) One diversification action, (5) Execute and measure impact.'
+            ]
+        });
+
+        // The Little Book of Common Sense Investing
+        this.sources.push({
+            id: 'little-book-investing',
+            title: 'The Little Book of Common Sense Investing',
+            author: 'John Bogle',
+            domain: 'finance',
+            keywords: ['index funds', 'low cost', 'long-term investing', 'Vanguard'],
+            principles: [
+                { name: 'Cost matters', description: 'Lower costs = higher returns' },
+                { name: 'Time is your friend', description: 'Long-term investing wins' },
+                { name: 'Stay the course', description: 'Avoid market timing' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Calculate the cost impact on your investments. Document: (1) Your current fees, (2) Cost over 30 years, (3) Lower-cost alternatives, (4) One change you\'ll make, (5) Execute and track savings.',
+                'REAL-WORLD ACTION: Create a long-term investment plan. Document: (1) Your goals, (2) Your time horizon, (3) Your asset allocation, (4) Your plan, (5) Start implementing and track progress.'
+            ]
+        });
+
+        // One Up On Wall Street
+        this.sources.push({
+            id: 'one-up-wall-street',
+            title: 'One Up On Wall Street',
+            author: 'Peter Lynch',
+            domain: 'finance',
+            keywords: ['stock picking', 'investing', 'research', 'common sense'],
+            principles: [
+                { name: 'Invest in what you know', description: 'Use your knowledge and experience' },
+                { name: 'Do your homework', description: 'Research before investing' },
+                { name: 'Long-term perspective', description: 'Think years, not days' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Identify ONE investment opportunity from your own knowledge/experience. Document: (1) What you know, (2) The opportunity, (3) Your research, (4) Your analysis, (5) Your decision and reasoning.',
+                'REAL-WORLD ACTION: Research ONE company thoroughly before investing. Document: (1) The company, (2) Your research process, (3) Key findings, (4) Your investment thesis, (5) Your decision and track results.'
+            ]
+        });
+
+        // The Millionaire Next Door
+        this.sources.push({
+            id: 'millionaire-next-door',
+            title: 'The Millionaire Next Door',
+            author: 'Thomas Stanley & William Danko',
+            domain: 'finance',
+            keywords: ['wealth building', 'frugality', 'savings', 'lifestyle'],
+            principles: [
+                { name: 'Live below your means', description: 'Spend less than you earn' },
+                { name: 'Focus on net worth', description: 'Build assets, not show wealth' },
+                { name: 'Financial discipline', description: 'Consistent saving and investing' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Calculate your net worth. Document: (1) All assets, (2) All liabilities, (3) Your net worth, (4) One action to increase it, (5) Execute and track progress monthly.',
+                'REAL-WORLD ACTION: Analyze your spending vs. income. Document: (1) Your income, (2) Your spending, (3) The gap, (4) One way to increase the gap, (5) Implement and measure impact.'
+            ]
+        });
+
+        // Your Money or Your Life
+        this.sources.push({
+            id: 'your-money-your-life',
+            title: 'Your Money or Your Life',
+            author: 'Vicki Robin & Joe Dominguez',
+            domain: 'finance',
+            keywords: ['financial independence', 'FIRE', 'life energy', 'values'],
+            principles: [
+                { name: 'Money is life energy', description: 'Understand the true cost of purchases' },
+                { name: 'Financial independence', description: 'Build enough passive income' },
+                { name: 'Values-based spending', description: 'Spend on what truly matters' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Calculate your real hourly wage (after all work-related costs). Document: (1) Your calculation, (2) How this changes your perspective, (3) One spending decision using this, (4) The impact, (5) Your reflection.',
+                'REAL-WORLD ACTION: Track every expense for one week and categorize by values. Document: (1) All expenses, (2) Values alignment, (3) Misalignments, (4) One change you\'ll make, (5) Implement and measure impact.'
+            ]
+        });
+
+        // Additional Finance Sources (5 more)
+        const financeBooks = [
+            { title: 'The Total Money Makeover', author: 'Dave Ramsey', focus: 'Debt elimination' },
+            { title: 'I Will Teach You to Be Rich', author: 'Ramit Sethi', focus: 'Automated finances' },
+            { title: 'The Simple Path to Wealth', author: 'JL Collins', focus: 'Financial independence' },
+            { title: 'The Richest Man in Babylon', author: 'George Clason', focus: 'Wealth principles' },
+            { title: 'The Psychology of Money', author: 'Morgan Housel', focus: 'Money psychology' }
+        ];
+
+        financeBooks.forEach((book, i) => {
             this.sources.push({
-                id: `finance-source-${i}`,
-                title: `Finance Source ${i}`,
-                author: 'Finance Experts',
+                id: `finance-book-${i}`,
+                title: book.title,
+                author: book.author,
                 domain: 'finance',
-                keywords: ['finance', 'money', 'investment', 'wealth'],
+                keywords: ['finance', book.focus.toLowerCase()],
                 principles: [
-                    { name: `Finance Principle ${i}`, description: 'Core financial principle' }
+                    { name: `${book.focus} principle`, description: `Core financial principle from ${book.title}` }
                 ],
                 exercises: [
-                    `Apply finance principle ${i} to improve your financial situation`
+                    `REAL-WORLD ACTION: Apply ${book.focus} to improve ONE aspect of your finances. Document: (1) Your current situation, (2) How the principle applies, (3) Your action plan, (4) Execute it, (5) Measure and report financial impact.`
                 ]
             });
-        }
+        });
     }
 
     addSocialPowerSources() {
@@ -614,8 +713,8 @@ class KnowledgeSources {
                 { name: 'Influence through empathy', description: 'Understand others deeply' }
             ],
             exercises: [
-                'Observe one person and identify their true motivations vs. what they say',
-                'Practice emotional control in one challenging situation'
+                'REAL-WORLD ACTION: Observe ONE real person this week and identify their true motivations vs. what they say. Document: (1) Who you observed, (2) What they said, (3) What you observed (body language, actions, patterns), (4) Your assessment of true motivations, (5) How this insight helps you interact with them better.',
+                'REAL-WORLD ACTION: Practice emotional control in ONE challenging situation. Document: (1) The situation, (2) Your initial emotional response, (3) How you controlled it, (4) The technique you used, (5) The outcome and how it differed from reacting emotionally.'
             ]
         });
 
@@ -631,29 +730,129 @@ class KnowledgeSources {
                     { name: `Social Principle ${i}`, description: 'Core social/power principle' }
                 ],
                 exercises: [
-                    `Apply social principle ${i} in one interaction this week`
+                    `REAL-WORLD ACTION: Apply social principle ${i} in ONE real interaction this week. Document: (1) Who you interacted with, (2) The situation, (3) How you applied the principle, (4) Their response, (5) The outcome and what you learned.`
                 ]
             });
         }
     }
 
     addPsychologySources() {
-        // Additional Psychology Sources (10+)
-        for (let i = 1; i <= 10; i++) {
+        // Thinking, Fast and Slow
+        this.sources.push({
+            id: 'thinking-fast-slow',
+            title: 'Thinking, Fast and Slow',
+            author: 'Daniel Kahneman',
+            domain: 'psychology',
+            keywords: ['cognitive biases', 'decision making', 'system 1', 'system 2', 'heuristics'],
+            principles: [
+                { name: 'System 1 and System 2', description: 'Fast intuitive thinking vs slow deliberate thinking' },
+                { name: 'Cognitive biases', description: 'Systematic errors in thinking' },
+                { name: 'Anchoring effect', description: 'First information influences decisions' },
+                { name: 'Loss aversion', description: 'Losses hurt more than gains feel good' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Identify ONE cognitive bias affecting a real decision. Document: (1) The decision, (2) The bias, (3) How it affects you, (4) How to counter it, (5) Apply the counter and report results.',
+                'REAL-WORLD ACTION: Practice System 2 thinking for ONE important decision. Document: (1) The decision, (2) Your System 1 reaction, (3) Your System 2 analysis, (4) Your final decision, (5) The outcome and what you learned.'
+            ]
+        });
+
+        // The Power of Habit
+        this.sources.push({
+            id: 'power-of-habit',
+            title: 'The Power of Habit',
+            author: 'Charles Duhigg',
+            domain: 'psychology',
+            keywords: ['habits', 'cue', 'routine', 'reward', 'habit loop'],
+            principles: [
+                { name: 'Habit loop', description: 'Cue → Routine → Reward' },
+                { name: 'Keystone habits', description: 'Habits that trigger other positive changes' },
+                { name: 'Habit replacement', description: 'Change routine, keep cue and reward' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Analyze ONE habit using the habit loop. Document: (1) The habit, (2) The cue, (3) The routine, (4) The reward, (5) One way to improve it and track results.',
+                'REAL-WORLD ACTION: Change ONE bad habit by replacing the routine. Document: (1) The habit, (2) Your replacement routine, (3) Your plan, (4) Execute for one week, (5) Report results and what you learned.'
+            ]
+        });
+
+        // Atomic Habits
+        this.sources.push({
+            id: 'atomic-habits',
+            title: 'Atomic Habits',
+            author: 'James Clear',
+            domain: 'psychology',
+            keywords: ['habits', '1% improvement', 'identity', 'systems', 'environment'],
+            principles: [
+                { name: '1% better every day', description: 'Small improvements compound' },
+                { name: 'Identity-based habits', description: 'Change who you are, not what you do' },
+                { name: 'Environment design', description: 'Design your environment for success' },
+                { name: 'Habit stacking', description: 'Link new habits to existing ones' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Build ONE new habit using identity-based approach. Document: (1) The identity you want, (2) The habit, (3) Your implementation plan, (4) Execute for one week, (5) Track progress and report results.',
+                'REAL-WORLD ACTION: Redesign your environment for ONE habit. Document: (1) The habit, (2) Current environment, (3) Your redesign, (4) Implement it, (5) Measure impact after one week.'
+            ]
+        });
+
+        // Grit
+        this.sources.push({
+            id: 'grit',
+            title: 'Grit',
+            author: 'Angela Duckworth',
+            domain: 'psychology',
+            keywords: ['grit', 'perseverance', 'passion', 'practice', 'resilience'],
+            principles: [
+                { name: 'Grit = Passion + Perseverance', description: 'Long-term commitment to goals' },
+                { name: 'Deliberate practice', description: 'Focused, effortful practice' },
+                { name: 'Growth mindset', description: 'Belief that abilities can be developed' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Apply deliberate practice to ONE skill. Document: (1) The skill, (2) Your practice plan, (3) Focus areas, (4) Practice sessions, (5) Progress after one week and what you learned.',
+                'REAL-WORLD ACTION: Demonstrate grit in ONE challenging situation. Document: (1) The challenge, (2) Your passion for it, (3) How you persevered, (4) The outcome, (5) What you learned about your grit.'
+            ]
+        });
+
+        // Mindset
+        this.sources.push({
+            id: 'mindset',
+            title: 'Mindset',
+            author: 'Carol Dweck',
+            domain: 'psychology',
+            keywords: ['growth mindset', 'fixed mindset', 'learning', 'intelligence'],
+            principles: [
+                { name: 'Growth mindset', description: 'Belief that abilities can be developed' },
+                { name: 'Fixed mindset', description: 'Belief that abilities are fixed' },
+                { name: 'The power of yet', description: 'Not yet vs. failure' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Identify ONE area where you have a fixed mindset. Document: (1) The area, (2) Your fixed mindset beliefs, (3) How to shift to growth mindset, (4) Apply it in one situation, (5) Report results and what changed.',
+                'REAL-WORLD ACTION: Practice "not yet" thinking in ONE challenge. Document: (1) The challenge, (2) Your initial reaction, (3) Your "not yet" reframe, (4) Your approach, (5) The outcome and learning.'
+            ]
+        });
+
+        // Additional Psychology Sources (5 more)
+        const psychologyBooks = [
+            { title: 'Emotional Intelligence', author: 'Daniel Goleman', focus: 'EQ development' },
+            { title: 'Blink', author: 'Malcolm Gladwell', focus: 'Rapid cognition' },
+            { title: 'Outliers', author: 'Malcolm Gladwell', focus: 'Success factors' },
+            { title: 'The Social Animal', author: 'David Brooks', focus: 'Social psychology' },
+            { title: 'Predictably Irrational', author: 'Dan Ariely', focus: 'Behavioral economics' }
+        ];
+
+        psychologyBooks.forEach((book, i) => {
             this.sources.push({
-                id: `psychology-source-${i}`,
-                title: `Psychology Source ${i}`,
-                author: 'Psychology Experts',
+                id: `psychology-book-${i}`,
+                title: book.title,
+                author: book.author,
                 domain: 'psychology',
-                keywords: ['psychology', 'behavior', 'mind', 'cognitive'],
+                keywords: ['psychology', book.focus.toLowerCase()],
                 principles: [
-                    { name: `Psychology Principle ${i}`, description: 'Core psychological principle' }
+                    { name: `${book.focus} principle`, description: `Core psychological principle from ${book.title}` }
                 ],
                 exercises: [
-                    `Apply psychology principle ${i} to understand one behavior`
+                    `REAL-WORLD ACTION: Apply ${book.focus} to understand ONE real behavior. Document: (1) The behavior, (2) Your analysis, (3) Your insights, (4) One application, (5) Execute and report results.`
                 ]
             });
-        }
+        });
     }
 
     addLeadershipSources() {
@@ -669,48 +868,162 @@ class KnowledgeSources {
                     { name: `Leadership Principle ${i}`, description: 'Core leadership principle' }
                 ],
                 exercises: [
-                    `Apply leadership principle ${i} in one leadership situation`
+                    `REAL-WORLD ACTION: Apply leadership principle ${i} in ONE real leadership situation. Document: (1) The situation, (2) Your team/people involved, (3) How you applied the principle, (4) Their response, (5) The outcome and impact on the team.`
                 ]
             });
         }
     }
 
     addSystemsSources() {
-        // Additional Systems Thinking Sources (9 more, Thinking in Systems already added)
-        for (let i = 1; i <= 9; i++) {
+        // The Fifth Discipline
+        this.sources.push({
+            id: 'fifth-discipline',
+            title: 'The Fifth Discipline',
+            author: 'Peter Senge',
+            domain: 'systems',
+            keywords: ['learning organizations', 'systems thinking', 'mental models', 'shared vision'],
+            principles: [
+                { name: 'Systems thinking', description: 'See interconnections and patterns' },
+                { name: 'Personal mastery', description: 'Continuous personal growth' },
+                { name: 'Mental models', description: 'Challenge assumptions' },
+                { name: 'Shared vision', description: 'Create common purpose' },
+                { name: 'Team learning', description: 'Learn together' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Apply systems thinking to ONE organizational problem. Document: (1) The problem, (2) System map, (3) Interconnections, (4) Leverage points, (5) One intervention and results.',
+                'REAL-WORLD ACTION: Challenge ONE mental model in your organization. Document: (1) The mental model, (2) Why it exists, (3) How to challenge it, (4) Your approach, (5) Impact and what changed.'
+            ]
+        });
+
+        // Additional Systems Sources (8 more)
+        const systemsBooks = [
+            { title: 'The Systems View of Life', author: 'Fritjof Capra', focus: 'Holistic systems' },
+            { title: 'Antifragile', author: 'Nassim Taleb', focus: 'Systems that gain from disorder' },
+            { title: 'The Black Swan', author: 'Nassim Taleb', focus: 'Unpredictable events' },
+            { title: 'Complexity', author: 'Mitchell Waldrop', focus: 'Complex adaptive systems' },
+            { title: 'Emergence', author: 'Steven Johnson', focus: 'Emergent behavior' },
+            { title: 'The Tipping Point', author: 'Malcolm Gladwell', focus: 'Systemic change' },
+            { title: 'Scale', author: 'Geoffrey West', focus: 'Scaling laws' },
+            { title: 'The Art of Systems Thinking', author: 'Joseph O\'Connor', focus: 'Systems analysis' }
+        ];
+
+        systemsBooks.forEach((book, i) => {
             this.sources.push({
-                id: `systems-source-${i}`,
-                title: `Systems Thinking Source ${i}`,
-                author: 'Systems Experts',
+                id: `systems-book-${i}`,
+                title: book.title,
+                author: book.author,
                 domain: 'systems',
-                keywords: ['systems', 'complexity', 'interconnections', 'feedback'],
+                keywords: ['systems', book.focus.toLowerCase()],
                 principles: [
-                    { name: `Systems Principle ${i}`, description: 'Core systems principle' }
+                    { name: `${book.focus} principle`, description: `Core systems principle from ${book.title}` }
                 ],
                 exercises: [
-                    `Map one system using systems principle ${i}`
+                    `REAL-WORLD ACTION: Apply ${book.focus} to analyze ONE real system. Document: (1) The system, (2) Your analysis, (3) Insights gained, (4) One intervention, (5) Execute and measure system response.`
                 ]
             });
-        }
+        });
     }
 
     addLearningSources() {
-        // Additional Learning & Memory Sources (10+)
-        for (let i = 1; i <= 10; i++) {
+        // Make It Stick
+        this.sources.push({
+            id: 'make-it-stick',
+            title: 'Make It Stick',
+            author: 'Peter Brown, Henry Roediger, Mark McDaniel',
+            domain: 'learning',
+            keywords: ['learning', 'memory', 'retrieval practice', 'spaced repetition'],
+            principles: [
+                { name: 'Retrieval practice', description: 'Test yourself to strengthen memory' },
+                { name: 'Spaced repetition', description: 'Review over increasing intervals' },
+                { name: 'Interleaving', description: 'Mix different topics' },
+                { name: 'Elaboration', description: 'Connect new to known' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Use retrieval practice to learn ONE real topic. Document: (1) The topic, (2) Your retrieval practice plan, (3) Practice sessions, (4) What you retrieved, (5) Retention after one week and what you learned.',
+                'REAL-WORLD ACTION: Apply spaced repetition to ONE skill. Document: (1) The skill, (2) Your schedule, (3) Practice sessions, (4) Retention over time, (5) Results and effectiveness.'
+            ]
+        });
+
+        // Peak
+        this.sources.push({
+            id: 'peak',
+            title: 'Peak',
+            author: 'Anders Ericsson',
+            domain: 'learning',
+            keywords: ['deliberate practice', 'expertise', '10,000 hours', 'mastery'],
+            principles: [
+                { name: 'Deliberate practice', description: 'Focused, goal-oriented practice' },
+                { name: 'Mental representations', description: 'Build better mental models' },
+                { name: 'Push beyond comfort zone', description: 'Always challenge yourself' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Apply deliberate practice to ONE skill. Document: (1) The skill, (2) Your practice plan, (3) Focus areas, (4) Practice sessions, (5) Progress and what you learned about deliberate practice.',
+                'REAL-WORLD ACTION: Build mental representations for ONE domain. Document: (1) The domain, (2) Your current understanding, (3) How you\'ll improve it, (4) Your approach, (5) Results and improved understanding.'
+            ]
+        });
+
+        // The Art of Learning
+        this.sources.push({
+            id: 'art-of-learning',
+            title: 'The Art of Learning',
+            author: 'Josh Waitzkin',
+            domain: 'learning',
+            keywords: ['learning', 'mastery', 'performance', 'mindset'],
+            principles: [
+                { name: 'Investment in loss', description: 'Learn from mistakes' },
+                { name: 'Numbers to leave numbers', description: 'Master fundamentals then transcend' },
+                { name: 'Making smaller circles', description: 'Refine and perfect basics' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Apply "investment in loss" to ONE learning situation. Document: (1) The situation, (2) Your mistakes, (3) What you learned, (4) How you improved, (5) Results and growth.',
+                'REAL-WORLD ACTION: Practice "making smaller circles" with ONE skill. Document: (1) The skill, (2) The basics, (3) How you refined them, (4) Your practice, (5) Improvement and mastery gained.'
+            ]
+        });
+
+        // Ultralearning
+        this.sources.push({
+            id: 'ultralearning',
+            title: 'Ultralearning',
+            author: 'Scott Young',
+            domain: 'learning',
+            keywords: ['rapid learning', 'skill acquisition', 'self-directed learning'],
+            principles: [
+                { name: 'Metalearning', description: 'Learn how to learn the subject' },
+                { name: 'Directness', description: 'Learn by doing' },
+                { name: 'Drill', description: 'Attack weakest points' },
+                { name: 'Retrieval', description: 'Test to learn' }
+            ],
+            exercises: [
+                'REAL-WORLD ACTION: Create an ultralearning project for ONE skill. Document: (1) The skill, (2) Your metalearning research, (3) Your direct practice plan, (4) Your drills, (5) Progress after one week and results.',
+                'REAL-WORLD ACTION: Apply directness to learn ONE real skill. Document: (1) The skill, (2) How you\'ll learn by doing, (3) Your practice, (4) What you learned, (5) Effectiveness and what worked.'
+            ]
+        });
+
+        // Additional Learning Sources (6 more)
+        const learningBooks = [
+            { title: 'A Mind for Numbers', author: 'Barbara Oakley', focus: 'Math and science learning' },
+            { title: 'Moonwalking with Einstein', author: 'Joshua Foer', focus: 'Memory techniques' },
+            { title: 'The Talent Code', author: 'Daniel Coyle', focus: 'Talent development' },
+            { title: 'How We Learn', author: 'Benedict Carey', focus: 'Learning science' },
+            { title: 'The Learning Brain', author: 'Stanislas Dehaene', focus: 'Neuroscience of learning' },
+            { title: 'Learn Better', author: 'Ulrich Boser', focus: 'Effective learning strategies' }
+        ];
+
+        learningBooks.forEach((book, i) => {
             this.sources.push({
-                id: `learning-source-${i}`,
-                title: `Learning & Memory Source ${i}`,
-                author: 'Learning Experts',
+                id: `learning-book-${i}`,
+                title: book.title,
+                author: book.author,
                 domain: 'learning',
-                keywords: ['learning', 'memory', 'education', 'retention'],
+                keywords: ['learning', book.focus.toLowerCase()],
                 principles: [
-                    { name: `Learning Principle ${i}`, description: 'Core learning principle' }
+                    { name: `${book.focus} principle`, description: `Core learning principle from ${book.title}` }
                 ],
                 exercises: [
-                    `Apply learning principle ${i} to learn one new skill`
+                    `REAL-WORLD ACTION: Apply ${book.focus} to learn ONE real skill. Document: (1) The skill, (2) Your learning approach, (3) Practice sessions, (4) Progress, (5) Results after one week and what you learned.`
                 ]
             });
-        }
+        });
     }
 
     getAllSources() {

@@ -969,6 +969,55 @@ p, span, div.message-content, .quest-description, .notification-content, .modal-
     color: var(--text-secondary);
 }
 
+/* Journal Entries Container */
+.journal-entries-container {
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-blue) var(--bg-secondary);
+}
+
+.journal-entries-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.journal-entries-container::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.journal-entries-container::-webkit-scrollbar-thumb {
+    background: var(--neon-blue);
+    border-radius: 3px;
+}
+
+.journal-entries-container::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-blue-light);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.status-badge #ai-status-indicator {
+    font-size: 0.75rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 /* AI Assistant - App Style */
 .assistant-container {
     display: flex;

@@ -6,44 +6,24 @@
 class QuestSystem {
     constructor() {
         this.quests = [];
-        this.questVoiceRecognition = null;
+        this.questVoiceRecognition = null; // Still used for report voice input
     }
 
     // Initialize quest system
     async init() {
         await this.loadQuests();
         await aiQuestGenerator.init();
-        this.initQuestVoiceInput();
+        this.initReportVoiceInput();
     }
 
-    // Initialize voice input for quest generation
-    initQuestVoiceInput() {
+    // Initialize voice input for quest reports (not quest requests)
+    initReportVoiceInput() {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             this.questVoiceRecognition = new SpeechRecognition();
             this.questVoiceRecognition.continuous = false;
             this.questVoiceRecognition.interimResults = false;
             this.questVoiceRecognition.lang = 'en-US';
-
-            this.questVoiceRecognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                const inputField = document.getElementById('quest-input-text');
-                if (inputField) {
-                    inputField.value = transcript;
-                }
-                this.questVoiceRecognition.stop();
-                document.getElementById('btn-quest-voice-input').textContent = '🎤 Voice';
-            };
-
-            this.questVoiceRecognition.onerror = (event) => {
-                console.error('Voice recognition error:', event.error);
-                this.questVoiceRecognition.stop();
-                document.getElementById('btn-quest-voice-input').textContent = '🎤 Voice';
-            };
-
-            this.questVoiceRecognition.onend = () => {
-                document.getElementById('btn-quest-voice-input').textContent = '🎤 Voice';
-            };
         }
     }
 

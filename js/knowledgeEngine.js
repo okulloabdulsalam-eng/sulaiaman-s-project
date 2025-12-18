@@ -41,6 +41,13 @@ class KnowledgeEngine {
                 this.sources = [];
             }
             
+            // Load extended sources if available
+            if (typeof knowledgeSourcesExtended !== 'undefined') {
+                const extended = knowledgeSourcesExtended.getAllExtendedSources();
+                this.sources.push(...extended);
+                console.log(`[Knowledge Engine] Added ${extended.length} extended sources`);
+            }
+            
             // Load from IndexedDB cache
             const cached = await db.getKnowledgeSources();
             if (cached && cached.length > 0) {
@@ -258,7 +265,7 @@ class KnowledgeEngine {
         }
     }
 
-    // Sync sources when online (placeholder for future online sync)
+    // Sync sources when online
     async syncSources() {
         if (this.offlineMode) {
             console.log('[Knowledge Engine] Offline mode - skipping sync');
@@ -266,10 +273,18 @@ class KnowledgeEngine {
         }
         
         try {
-            // Future: Fetch new sources from API
-            // For now, just update cache
+            // Use knowledge sync system if available
+            if (typeof knowledgeSync !== 'undefined') {
+                await knowledgeSync.syncKnowledge();
+            }
+            
+            // Update cache
             await this.cacheSources();
             this.lastSyncTime = Date.now();
+            
+            // Re-index after sync
+            await this.indexKnowledge();
+            
             console.log('[Knowledge Engine] Sources synced');
         } catch (error) {
             console.error('[Knowledge Engine] Sync error:', error);
