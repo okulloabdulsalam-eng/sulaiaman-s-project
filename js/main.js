@@ -38,6 +38,18 @@ async function init() {
         console.log('Initializing database...');
         await db.init();
         
+        // Initialize knowledge engine (must be before quest generators)
+        console.log('Initializing knowledge engine...');
+        if (typeof knowledgeEngine !== 'undefined') {
+            await knowledgeEngine.init();
+            // Cache sources for offline use
+            await knowledgeEngine.cacheSources();
+            
+            // Verify coverage
+            const coverage = knowledgeEngine.getCoverageReport();
+            console.log('[Knowledge Engine] Coverage:', coverage);
+        }
+        
         // Initialize game engine
         console.log('Initializing game engine...');
         await gameEngine.init();

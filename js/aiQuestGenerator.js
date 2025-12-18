@@ -115,8 +115,38 @@ class AIQuestGenerator {
         // Save user input
         await this.saveUserInput(userInput, context);
 
-        // Generate quest based on analysis
-        const quest = this.createQuestFromContext(userInput, context, playerData);
+        // Try to generate knowledge-backed quest first
+        let quest = null;
+        if (typeof knowledgeEngine !== 'undefined' && knowledgeEngine.sources.length > 0) {
+            const primaryCategory = context.categories.length > 0 ? context.categories[0] : 'strategy';
+            const domain = this.mapCategoryToDomain(primaryCategory);
+            
+            try {
+                quest = await knowledgeEngine.generateQuestFromKnowledge(domain, {
+                    userInput: userInput,
+                    context: context
+                });
+                
+                if (quest) {
+                    // Validate quest is knowledge-backed
+                    if (typeof knowledgeQuestTranslator !== 'undefined') {
+                        const validation = knowledgeQuestTranslator.validateQuest(quest);
+                        if (!validation.valid) {
+                            console.warn('[AI Quest Generator] Knowledge quest validation failed:', validation.reason);
+                            quest = null; // Fall back to regular generation
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('[AI Quest Generator] Error generating knowledge quest:', error);
+                quest = null;
+            }
+        }
+
+        // Fallback to regular quest generation if knowledge quest failed
+        if (!quest) {
+            quest = this.createQuestFromContext(userInput, context, playerData);
+        }
 
         // Store context for future reference
         this.contextHistory.push({
@@ -127,6 +157,18 @@ class AIQuestGenerator {
         });
 
         return quest;
+    }
+
+    // Map quest category to knowledge domain
+    mapCategoryToDomain(category) {
+        const mapping = {
+            strategy: 'strategy',
+            social: 'social',
+            financial: 'finance',
+            medical: 'medicine',
+            fitness: 'learning' // Fitness often involves learning
+        };
+        return mapping[category] || 'strategy';
     }
 
     // Create quest from analyzed context
@@ -337,4 +379,7 @@ class AIQuestGenerator {
 
 // Export singleton instance
 const aiQuestGenerator = new AIQuestGenerator();
+
+
+
 

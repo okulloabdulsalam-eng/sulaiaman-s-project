@@ -168,13 +168,48 @@ class BackgroundQuestGenerator {
 
     // Create quest from context using AI quest generator
     async createQuestFromContext(context, category) {
-        // Use AI quest generator to create quest from context
-        const quest = await aiQuestGenerator.generateQuestFromInput(context);
+        // Try knowledge-backed quest generation first
+        let quest = null;
         
-        // Ensure category matches
-        quest.category = category;
+        if (typeof knowledgeEngine !== 'undefined' && knowledgeEngine.sources.length > 0) {
+            const domain = this.mapCategoryToDomain(category);
+            
+            try {
+                quest = await knowledgeEngine.generateQuestFromKnowledge(domain, {
+                    userInput: context,
+                    category: category
+                });
+                
+                if (quest && typeof knowledgeQuestTranslator !== 'undefined') {
+                    const validation = knowledgeQuestTranslator.validateQuest(quest);
+                    if (!validation.valid) {
+                        quest = null;
+                    }
+                }
+            } catch (error) {
+                console.error('[Background Quest Generator] Error generating knowledge quest:', error);
+            }
+        }
+        
+        // Fallback to regular AI quest generator
+        if (!quest) {
+            quest = await aiQuestGenerator.generateQuestFromInput(context);
+            quest.category = category;
+        }
         
         return quest;
+    }
+
+    // Map category to knowledge domain
+    mapCategoryToDomain(category) {
+        const mapping = {
+            strategy: 'strategy',
+            social: 'social',
+            financial: 'finance',
+            medical: 'medicine',
+            fitness: 'learning'
+        };
+        return mapping[category] || 'strategy';
     }
 
     // Stop background generation
@@ -189,4 +224,7 @@ class BackgroundQuestGenerator {
 
 // Export singleton instance
 const backgroundQuestGenerator = new BackgroundQuestGenerator();
+
+
+
 

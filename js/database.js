@@ -4,7 +4,7 @@
 class Database {
     constructor() {
         this.dbName = 'SoloLevelingDB';
-        this.version = 1;
+        this.version = 2; // Incremented for knowledge sources
         this.db = null;
     }
 
@@ -49,6 +49,13 @@ class Database {
                 if (!db.objectStoreNames.contains('history')) {
                     const historyStore = db.createObjectStore('history', { keyPath: 'id', autoIncrement: true });
                     historyStore.createIndex('timestamp', 'timestamp', { unique: false });
+                }
+
+                // Knowledge sources store (for offline caching)
+                if (!db.objectStoreNames.contains('knowledgeSources')) {
+                    const knowledgeStore = db.createObjectStore('knowledgeSources', { keyPath: 'id' });
+                    knowledgeStore.createIndex('domain', 'domain', { unique: false });
+                    knowledgeStore.createIndex('author', 'author', { unique: false });
                 }
             };
         });
@@ -119,6 +126,25 @@ class Database {
             .slice(0, limit);
     }
 
+    // Knowledge sources methods
+    async saveKnowledgeSources(sources) {
+        // Save all sources
+        const promises = sources.map(source => this.put('knowledgeSources', source));
+        return Promise.all(promises);
+    }
+
+    async getKnowledgeSources() {
+        return this.getAll('knowledgeSources');
+    }
+
+    async getKnowledgeSourcesByDomain(domain) {
+        return this.getByIndex('knowledgeSources', 'domain', domain);
+    }
+
+    async getKnowledgeSource(sourceId) {
+        return this.get('knowledgeSources', sourceId);
+    }
+
     // Generic database methods
     async put(storeName, data) {
         return new Promise((resolve, reject) => {
@@ -179,4 +205,7 @@ class Database {
 
 // Export singleton instance
 const db = new Database();
+
+
+
 

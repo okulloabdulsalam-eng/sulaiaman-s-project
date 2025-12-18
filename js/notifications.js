@@ -124,3 +124,6 @@ function showNotification(title, content, type = 'info', duration = 5000) {
 const notificationSystem = new NotificationSystem();
 window.notificationSystem = notificationSystem;
 
+
+
+

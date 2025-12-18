@@ -132,11 +132,18 @@ class ReportSystem {
         return report;
     }
 
-    // Perform AI analysis on report (simulated AI analysis)
+    // Perform AI analysis on report (SYSTEM-EVALUATED ONLY - No manual reward claiming)
+    // Rewards are ONLY given after system analysis verifies real-world completion
     async performAIAnalysis(report) {
         const reportText = report.reportText.toLowerCase();
         const quest = questSystem.getQuest(report.questId);
         
+        // For knowledge-backed quests, check if principle was actually applied
+        if (quest.knowledgeSource) {
+            return await this.analyzeKnowledgeBackedQuest(report, quest);
+        }
+        
+        // Standard quest analysis
         // Analyze completion indicators
         const completionIndicators = [
             'completed', 'finished', 'done', 'accomplished', 'achieved', 
@@ -188,7 +195,7 @@ class ReportSystem {
             quality = 'excellent';
         }
 
-        // Verification threshold
+        // Verification threshold - SYSTEM ONLY, no manual claiming
         verified = score >= 50;
         
         // Determine quality level
@@ -205,6 +212,7 @@ class ReportSystem {
         details.push(`Quest keyword matches: ${keywordMatches}/${questKeywords.length}`);
         details.push(`Report length: ${reportText.length} characters`);
         details.push(`Quality assessment: ${quality}`);
+        details.push(`SYSTEM EVALUATED - No manual reward claiming allowed`);
 
         return {
             verified,
@@ -213,6 +221,79 @@ class ReportSystem {
             details,
             keywordMatches,
             detailCount
+        };
+    }
+
+    // Analyze knowledge-backed quest completion
+    async analyzeKnowledgeBackedQuest(report, quest) {
+        const reportText = report.reportText.toLowerCase();
+        const knowledgeSource = quest.knowledgeSource;
+        const principle = knowledgeSource.principle.toLowerCase();
+        
+        let score = 0;
+        let verified = false;
+        let quality = 'basic';
+        const details = [];
+
+        // Check if principle was mentioned or applied
+        const principleWords = principle.split(/\W+/).filter(w => w.length > 3);
+        const principleMatches = principleWords.filter(word => 
+            reportText.includes(word)
+        ).length;
+
+        // Check for real-world application indicators
+        const applicationIndicators = [
+            'applied', 'used', 'implemented', 'practiced', 'executed',
+            'tried', 'tested', 'experimented', 'action', 'did', 'took'
+        ];
+        const hasApplication = applicationIndicators.some(ind => reportText.includes(ind));
+
+        // Check for outcome/results
+        const outcomeIndicators = [
+            'result', 'outcome', 'achieved', 'gained', 'learned', 'improved',
+            'worked', 'helped', 'succeeded', 'benefited'
+        ];
+        const hasOutcome = outcomeIndicators.some(ind => reportText.includes(ind));
+
+        // Calculate score for knowledge-backed quest
+        if (principleMatches > 0) score += 40; // Principle recognition
+        if (hasApplication) score += 30; // Actual application
+        if (hasOutcome) score += 30; // Real-world results
+        if (reportText.length > 100) score += 20; // Detailed report
+        if (reportText.length > 200) score += 10; // Very detailed
+
+        // Check for source/book mention (bonus)
+        if (reportText.includes(knowledgeSource.sourceTitle.toLowerCase().split(' ')[0])) {
+            score += 10;
+        }
+
+        // Verification threshold - must show real application
+        verified = score >= 60 && hasApplication; // Higher threshold for knowledge quests
+        
+        // Determine quality
+        if (score >= 120 && hasApplication && hasOutcome) {
+            quality = 'excellent';
+        } else if (score >= 90 && hasApplication) {
+            quality = 'good';
+        } else if (score >= 60) {
+            quality = 'basic';
+        }
+
+        details.push(`Principle application detected: ${principleMatches > 0}`);
+        details.push(`Real-world action taken: ${hasApplication}`);
+        details.push(`Outcome reported: ${hasOutcome}`);
+        details.push(`Report length: ${reportText.length} characters`);
+        details.push(`Quality: ${quality}`);
+        details.push(`SYSTEM EVALUATED - Knowledge-backed quest verification`);
+
+        return {
+            verified,
+            score: Math.min(score, 150),
+            quality,
+            details,
+            principleMatches,
+            hasApplication,
+            hasOutcome
         };
     }
 

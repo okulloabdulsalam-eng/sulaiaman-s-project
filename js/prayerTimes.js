@@ -164,3 +164,6 @@ class PrayerTimes {
 // Export singleton instance
 const prayerTimes = new PrayerTimes();
 
+
+
+

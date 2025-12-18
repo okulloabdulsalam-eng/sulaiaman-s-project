@@ -283,8 +283,24 @@ class QuestSystem {
         const statusText = quest.status === 'active' ? 'Active' : quest.status === 'completed' ? 'Completed' : 'Pending';
         
         // Quest type badge
-        const typeBadge = quest.questType === 'ai_generated' ? 
-            '<span style="color: #00d4ff; font-size: 0.7rem; font-weight: bold;">AI GENERATED</span>' : '';
+        let typeBadge = '';
+        if (quest.questType === 'knowledge_backed') {
+            typeBadge = '<span style="color: #00d4ff; font-size: 0.7rem; font-weight: bold;">📚 KNOWLEDGE-BACKED</span>';
+        } else if (quest.questType === 'ai_generated') {
+            typeBadge = '<span style="color: #00d4ff; font-size: 0.7rem; font-weight: bold;">AI GENERATED</span>';
+        }
+        
+        // Source attribution (hidden by default, can be toggled)
+        let sourceAttribution = '';
+        if (quest.knowledgeSource && quest.sourceAttribution) {
+            const attribution = quest.sourceAttribution;
+            sourceAttribution = `
+                <div class="source-attribution" style="display: ${attribution.visible ? 'block' : 'none'}; margin-top: 0.5rem; padding: 0.5rem; background: rgba(0, 212, 255, 0.1); border-left: 2px solid #00d4ff; font-size: 0.75rem; color: var(--text-secondary);">
+                    <strong>Source:</strong> ${attribution.source} by ${attribution.author}<br>
+                    <strong>Principle:</strong> ${attribution.principle}
+                </div>
+            `;
+        }
         
         // Difficulty indicator
         const difficultyBadge = quest.difficulty ? 
@@ -305,12 +321,23 @@ class QuestSystem {
                     <span class="quest-xp">+${quest.xp} XP</span>
                 </div>
                 <p class="quest-description">${quest.description}</p>
+                ${sourceAttribution}
                 <div class="quest-footer">
                     <span class="quest-category">${quest.category}</span>
                     <span class="quest-status ${quest.status}">${statusText}</span>
+                    ${quest.knowledgeSource ? '<button class="btn-source-toggle" style="font-size: 0.7rem; padding: 0.25rem 0.5rem; margin-left: 0.5rem;" onclick="questSystem.toggleSourceAttribution(\'' + quest.id + '\')">📚 Source</button>' : ''}
                 </div>
             </div>
         `;
+    }
+
+    // Toggle source attribution visibility
+    toggleSourceAttribution(questId) {
+        const quest = this.getQuest(questId);
+        if (!quest || !quest.sourceAttribution) return;
+
+        quest.sourceAttribution.visible = !quest.sourceAttribution.visible;
+        this.renderQuests(); // Re-render to update visibility
     }
 
     // Render all quests
