@@ -4,7 +4,7 @@
 class Database {
     constructor() {
         this.dbName = 'SoloLevelingDB';
-        this.version = 4; // Incremented for AI journal system
+        this.version = 5; // Incremented for real-world features
         this.db = null;
     }
 
@@ -103,6 +103,12 @@ class Database {
                     pendingStore.createIndex('priority', 'priority', { unique: false });
                     pendingStore.createIndex('readyToDeliver', 'readyToDeliver', { unique: false });
                     pendingStore.createIndex('timestamp', 'timestamp', { unique: false });
+                }
+
+                // Purchases store
+                if (!db.objectStoreNames.contains('purchases')) {
+                    const purchaseStore = db.createObjectStore('purchases', { keyPath: 'id' });
+                    purchaseStore.createIndex('reportedAt', 'reportedAt', { unique: false });
                 }
             };
         });

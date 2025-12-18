@@ -13,12 +13,26 @@
     --neon-blue-dark: #0099cc;
     --neon-blue-light: #33e0ff;
     --accent-purple: #8b5cf6;
+    --accent-purple-light: #a78bfa;
+    --accent-purple-dark: #6d28d9;
     --accent-orange: #ff6b35;
     --text-primary: #ffffff;
     --text-secondary: #b0b8c8;
     --text-muted: #6b7280;
     --border-color: rgba(0, 212, 255, 0.2);
     --glow-color: rgba(0, 212, 255, 0.5);
+    
+    /* Solo Leveling Purple Theme */
+    --sl-purple: #a855f7;
+    --sl-purple-light: #c084fc;
+    --sl-purple-dark: #7c3aed;
+    --sl-purple-glow: rgba(168, 85, 247, 0.4);
+    --sl-purple-border: rgba(168, 85, 247, 0.3);
+    
+    /* Holographic Effects */
+    --hologram-bg: rgba(168, 85, 247, 0.1);
+    --hologram-border: rgba(168, 85, 247, 0.5);
+    --hologram-glow: rgba(168, 85, 247, 0.6);
     
     /* Rank Colors */
     --rank-E: #9ca3af;
@@ -1839,5 +1853,441 @@ input:focus-visible,
 textarea:focus-visible {
     outline: 2px solid var(--neon-blue);
     outline-offset: 2px;
+}
+
+/* ============================================
+   SOLO LEVELING UI ENHANCEMENTS
+   Based on reference images
+   ============================================ */
+
+/* Solo Leveling Holographic Panel */
+.glass-panel.holographic {
+    background: var(--hologram-bg);
+    border: 2px solid var(--hologram-border);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 0 1px var(--sl-purple) inset,
+        0 0 40px var(--hologram-glow),
+        0 0 80px var(--sl-purple-glow);
+    position: relative;
+}
+
+.glass-panel.holographic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.1), transparent),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(168, 85, 247, 0.03) 2px,
+            rgba(168, 85, 247, 0.03) 4px
+        );
+    pointer-events: none;
+    animation: hologramScan 3s linear infinite;
+}
+
+.glass-panel.holographic::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+    animation: hologramPulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes hologramScan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+@keyframes hologramPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* Circuit Board Pattern Background */
+.circuit-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.circuit-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+    pointer-events: none;
+    animation: circuitMove 20s linear infinite;
+}
+
+@keyframes circuitMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, 20px); }
+}
+
+/* Solo Leveling Quest Card Style */
+.quest-card.sl-style {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(26, 35, 56, 0.7) 100%);
+    border: 2px solid var(--sl-purple-border);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--sl-purple) inset,
+        0 0 30px var(--sl-purple-glow);
+}
+
+.quest-card.sl-style:hover {
+    border-color: var(--sl-purple-light);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--sl-purple-light) inset,
+        0 0 50px var(--hologram-glow);
+    transform: translateX(5px) translateY(-2px);
+}
+
+.quest-card.sl-style::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sl-purple), transparent);
+    opacity: 0.6;
+    animation: questGlow 2s ease-in-out infinite;
+}
+
+@keyframes questGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+/* Solo Leveling Quest Info Screen */
+.sl-quest-info .modal-content {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(26, 35, 56, 0.9) 100%);
+}
+
+.sl-quest-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--sl-purple-border);
+}
+
+.sl-quest-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sl-purple-glow);
+    border-radius: 50%;
+    border: 2px solid var(--sl-purple);
+}
+
+.sl-quest-title {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.sl-quest-arrival {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.sl-quest-goal h3 {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+}
+
+.sl-goal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sl-goal-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 8px;
+    border: 1px solid var(--sl-purple-border);
+}
+
+.sl-goal-item.completed {
+    background: rgba(34, 211, 153, 0.1);
+    border-color: rgba(34, 211, 153, 0.3);
+}
+
+.sl-goal-text {
+    flex: 1;
+    color: var(--text-primary);
+}
+
+.sl-goal-progress {
+    color: var(--text-secondary);
+    margin: 0 1rem;
+    font-family: 'Courier New', monospace;
+}
+
+.sl-goal-check {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--sl-purple);
+    border-radius: 4px;
+    color: var(--sl-purple-light);
+    font-weight: bold;
+}
+
+.sl-goal-item.completed .sl-goal-check {
+    background: #22d399;
+    border-color: #22d399;
+    color: white;
+}
+
+.sl-quest-warning {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: var(--text-primary);
+}
+
+.sl-quest-warning .penalty {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+.sl-quest-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sl-accept-btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Solo Leveling Item Detail */
+.sl-item-detail .modal-content {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(26, 35, 56, 0.9) 100%);
+}
+
+.sl-item-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--sl-purple-border);
+}
+
+.sl-item-icon {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sl-purple-glow);
+    border-radius: 12px;
+    border: 2px solid var(--sl-purple);
+}
+
+.sl-item-info {
+    flex: 1;
+}
+
+.sl-item-name {
+    font-family: var(--font-primary);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+}
+
+.sl-item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.sl-category-highlight {
+    color: var(--neon-blue-light);
+    font-weight: bold;
+}
+
+.sl-item-description {
+    color: var(--neon-blue-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--neon-blue);
+}
+
+.sl-item-effects {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 8px;
+}
+
+.sl-item-effects h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.sl-item-effects ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sl-item-effects li {
+    color: var(--neon-blue-light);
+    padding: 0.25rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.sl-item-effects li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--sl-purple-light);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.sl-item-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Purple Theme Overrides */
+body.purple-theme .glass-panel {
+    border-color: var(--sl-purple-border);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--sl-purple) inset,
+        0 0 25px var(--sl-purple-glow);
+}
+
+body.purple-theme .quest-card {
+    border-color: var(--sl-purple-border);
+}
+
+body.purple-theme .quest-card:hover {
+    border-color: var(--sl-purple-light);
+    box-shadow: 0 0 20px var(--sl-purple-glow);
+}
+
+body.purple-theme .quest-title {
+    color: var(--sl-purple-light);
+}
+
+body.purple-theme .btn-primary {
+    background: var(--sl-purple);
+    border-color: var(--sl-purple);
+}
+
+body.purple-theme .btn-primary:hover {
+    background: var(--sl-purple-light);
+    box-shadow: 0 0 20px var(--sl-purple-glow);
+}
+
+/* Journal Tab Styles */
+.journal-tab-btn {
+    transition: all 0.3s ease;
+}
+
+.journal-tab-btn:hover {
+    background: var(--bg-secondary);
+}
+
+.journal-tab-content {
+    display: none;
+}
+
+.journal-tab-content.active {
+    display: block;
+}
+
+/* Loot Box Opening Animation */
+@keyframes lootBoxShake {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-10px) rotate(-5deg); }
+    75% { transform: translateX(10px) rotate(5deg); }
+}
+
+/* Shop Item Styles */
+.shop-item.purchased {
+    opacity: 0.7;
+    border-color: rgba(34, 211, 153, 0.3);
+}
+
+.shop-item.purchased::before {
+    content: '✓';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 30px;
+    height: 30px;
+    background: #22d399;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.shop-category-btn.active {
+    background: var(--neon-blue) !important;
+    color: var(--bg-primary) !important;
+    border-color: var(--neon-blue) !important;
 }
 

@@ -172,6 +172,12 @@ class GameEngine {
             this.playerData.stats[statName] = 0;
         }
         
+        // Apply active skill buffs
+        if (typeof activeSkills !== 'undefined') {
+            const statMultiplier = activeSkills.getBuffMultiplier(statName) || 1.0;
+            amount = Math.floor(amount * statMultiplier);
+        }
+        
         this.playerData.stats[statName] += amount;
         if (this.playerData.stats[statName] < 0) {
             this.playerData.stats[statName] = 0;

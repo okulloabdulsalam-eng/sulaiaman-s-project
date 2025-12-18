@@ -38,6 +38,21 @@ function navigateTo(page) {
         if (typeof journalSearch !== 'undefined') {
             journalSearch.applyFilters();
         }
+        // Load active quests for reporting
+        updateQuestReportDropdown();
+    } else if (page === 'shop') {
+        // Refresh shop
+        if (typeof realWorldShop !== 'undefined') {
+            realWorldShop.renderShop();
+        }
+    } else if (page === 'skills') {
+        // Refresh active skills and crafting
+        if (typeof activeSkills !== 'undefined') {
+            activeSkills.renderSkills();
+        }
+        if (typeof realWorldCrafting !== 'undefined') {
+            realWorldCrafting.renderCrafting();
+        }
     } else if (page === 'stats') {
         // Refresh analytics and charts
         if (typeof questAnalytics !== 'undefined') {
@@ -311,6 +326,38 @@ async function init() {
             await journalAchievements.init();
         }
         
+        // Initialize Solo Leveling UI
+        console.log('Initializing Solo Leveling UI enhancements...');
+        if (typeof soloLevelingUI !== 'undefined') {
+            soloLevelingUI.init();
+        }
+        
+        // Initialize Real-World Features
+        console.log('Initializing energy system...');
+        if (typeof energySystem !== 'undefined') {
+            await energySystem.init();
+        }
+        
+        console.log('Initializing active skills...');
+        if (typeof activeSkills !== 'undefined') {
+            await activeSkills.init();
+        }
+        
+        console.log('Initializing real-world shop...');
+        if (typeof realWorldShop !== 'undefined') {
+            await realWorldShop.init();
+        }
+        
+        console.log('Initializing crafting system...');
+        if (typeof realWorldCrafting !== 'undefined') {
+            await realWorldCrafting.init();
+        }
+        
+        console.log('Initializing purchase reporting...');
+        if (typeof purchaseReporting !== 'undefined') {
+            await purchaseReporting.init();
+        }
+        
         // Setup event listeners
         setupEventListeners();
         
@@ -504,4 +551,7 @@ if (document.readyState === 'loading') {
 
 // Expose navigateTo globally
 window.navigateTo = navigateTo;
+
+// Expose updateQuestReportDropdown globally
+window.updateQuestReportDropdown = updateQuestReportDropdown;
 

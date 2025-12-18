@@ -72,6 +72,10 @@
                 <span class="nav-icon">🤖</span>
                 <span class="nav-label">AI</span>
             </button>
+            <button class="nav-btn" data-page="shop">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-label">Shop</span>
+            </button>
         </nav>
 
         <!-- Dashboard Page -->
@@ -88,6 +92,9 @@
                         <p id="player-rank" class="player-rank rank-E">Rank: E</p>
                     </div>
                 </div>
+
+                <!-- Energy/Focus Bars -->
+                <div id="energy-bars-container"></div>
 
                 <!-- XP Progress Bar -->
                 <div class="glass-panel xp-panel">
@@ -288,12 +295,57 @@
                     </div>
                 </div>
 
-                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
-                    <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">Share Your Life</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
-                        Tell me about your day, life experiences, goals, challenges, or anything you want me to remember. 
-                        I'll analyze this information to help you level up through personalized quests.
-                    </p>
+                <!-- Tab Selector for Journal/Reports -->
+                <div class="glass-panel" style="margin-bottom: 1rem; padding: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                        <button class="journal-tab-btn active" data-tab="journal" style="flex: 1; padding: 0.75rem; background: transparent; border: none; color: var(--text-primary); border-bottom: 2px solid var(--neon-blue); cursor: pointer;">
+                            📝 Journal
+                        </button>
+                        <button class="journal-tab-btn" data-tab="quest-reports" style="flex: 1; padding: 0.75rem; background: transparent; border: none; color: var(--text-secondary); cursor: pointer;">
+                            ⚔️ Quest Reports
+                        </button>
+                        <button class="journal-tab-btn" data-tab="purchases" style="flex: 1; padding: 0.75rem; background: transparent; border: none; color: var(--text-secondary); cursor: pointer;">
+                            🛒 Purchases
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Journal Tab Content -->
+                <div id="journal-tab-content" class="journal-tab-content active">
+                    <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">Share Your Life</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                            Tell me about your day, life experiences, goals, challenges, or anything you want me to remember. 
+                            I'll analyze this information to help you level up through personalized quests.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quest Reports Tab Content -->
+                <div id="quest-reports-tab-content" class="journal-tab-content" style="display: none;">
+                    <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">Quest Completion Reports</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                            Report how you completed your quests in real life. Describe what you did, what happened, what you learned, and the results. 
+                            The system will analyze your report and generate rewards based on your real-world achievements.
+                        </p>
+                    </div>
+                    <div id="active-quests-for-report" class="glass-panel" style="margin-bottom: 1rem; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.75rem 0; color: var(--text-primary);">Active Quests</h4>
+                        <div id="active-quests-list-reports"></div>
+                    </div>
+                </div>
+
+                <!-- Purchases Tab Content -->
+                <div id="purchases-tab-content" class="journal-tab-content" style="display: none;">
+                    <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">Report Real-World Purchases</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                            Did you buy a book, course, tool, or service that helps you level up? Report it here! 
+                            The system will add it to your inventory and track how it helps your growth.
+                        </p>
+                    </div>
+                    <div id="purchase-history-container"></div>
                 </div>
 
                 <!-- Journal Search & Filters -->
@@ -342,22 +394,83 @@
                         <!-- Journal entries will be displayed here -->
                     </div>
 
+                    <!-- Dynamic Input Container (changes based on active tab) -->
                     <div class="assistant-input-container" style="position: sticky; bottom: 0; background: var(--bg-primary); padding: 1rem; border-top: 1px solid var(--border-color);">
-                        <textarea 
-                            id="ai-journal-input" 
-                            class="assistant-input" 
-                            placeholder="Share your thoughts, experiences, goals, challenges... (Works offline)"
-                            rows="3"
-                            style="resize: vertical; min-height: 80px; font-family: inherit; width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
-                        ></textarea>
-                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                            <button id="btn-ai-voice-record" class="btn-secondary" style="flex: 0 0 auto; display: none;">
-                                <span style="margin-right: 0.5rem;">🎤</span> Voice
-                            </button>
-                            <button id="btn-save-journal-entry" class="btn-primary" style="flex: 1;">
-                                Save Entry
+                        <!-- Journal Input -->
+                        <div id="journal-input-section">
+                            <textarea 
+                                id="ai-journal-input" 
+                                class="assistant-input" 
+                                placeholder="Share your thoughts, experiences, goals, challenges... (Works offline)"
+                                rows="3"
+                                style="resize: vertical; min-height: 80px; font-family: inherit; width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                            ></textarea>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                <button id="btn-ai-voice-record" class="btn-secondary" style="flex: 0 0 auto; display: none;">
+                                    <span style="margin-right: 0.5rem;">🎤</span> Voice
+                                </button>
+                                <button id="btn-save-journal-entry" class="btn-primary" style="flex: 1;">
+                                    Save Entry
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quest Report Input -->
+                        <div id="quest-report-input-section" style="display: none;">
+                            <select id="quest-select-for-report" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                                <option value="">Select a quest to report...</option>
+                            </select>
+                            <textarea 
+                                id="quest-report-input" 
+                                class="assistant-input" 
+                                placeholder="Describe how you completed this quest in real life. What did you do? What happened? What did you learn? What were the results? Include details about money earned, items acquired, people you met, etc."
+                                rows="4"
+                                style="resize: vertical; min-height: 100px; font-family: inherit; width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                            ></textarea>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                <button id="btn-quest-report-voice" class="btn-secondary" style="flex: 0 0 auto; display: none;">
+                                    <span style="margin-right: 0.5rem;">🎤</span> Voice
+                                </button>
+                                <button id="btn-submit-quest-report" class="btn-primary" style="flex: 1;">
+                                    Submit Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Purchase Report Input -->
+                        <div id="purchase-report-input-section" style="display: none;">
+                            <select id="purchase-type-select" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                                <option value="">Select purchase type...</option>
+                                <option value="book">📚 Book</option>
+                                <option value="course">🎓 Course/Training</option>
+                                <option value="tool">🛠️ Tool/Equipment</option>
+                                <option value="service">💼 Service</option>
+                                <option value="software">💻 Software/App</option>
+                                <option value="other">📦 Other</option>
+                            </select>
+                            <input 
+                                type="text" 
+                                id="purchase-name-input" 
+                                placeholder="Item name (e.g., 'The Art of War by Sun Tzu')"
+                                style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                            >
+                            <input 
+                                type="number" 
+                                id="purchase-cost-input" 
+                                placeholder="Cost (optional)"
+                                style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                            >
+                            <textarea 
+                                id="purchase-description-input" 
+                                placeholder="How will this help you level up? What skills/stats will it improve?"
+                                rows="3"
+                                style="resize: vertical; min-height: 80px; font-family: inherit; width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                            ></textarea>
+                            <button id="btn-submit-purchase" class="btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                                Report Purchase
                             </button>
                         </div>
+
                         <div id="ai-analysis-status" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 8px; color: var(--text-secondary); font-size: 0.9rem;">
                             <div class="loading-spinner" style="width: 16px; height: 16px; margin-right: 0.5rem; display: inline-block;"></div>
                             <span>Analyzing your entry and generating insights...</span>
@@ -414,6 +527,16 @@
     <script src="js/smartReminders.js"></script>
     <script src="js/questDifficultyAdjustment.js"></script>
     <script src="js/journalAchievements.js"></script>
+    <!-- Solo Leveling UI Enhancements -->
+    <script src="js/soloLevelingUI.js"></script>
+    <!-- Real-World Features -->
+    <script src="js/realWorldShop.js"></script>
+    <script src="js/energySystem.js"></script>
+    <script src="js/activeSkills.js"></script>
+    <script src="js/questRewardsScreen.js"></script>
+    <script src="js/realWorldCrafting.js"></script>
+    <script src="js/lootBoxSystem.js"></script>
+    <script src="js/purchaseReporting.js"></script>
     <!-- Skills & Stats -->
     <script src="js/skillSystem.js"></script>
     <script src="js/skillSynergies.js"></script>

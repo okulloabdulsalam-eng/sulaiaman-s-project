@@ -167,6 +167,18 @@ class QuestSystem {
         
         // Show comprehensive reward notification
         this.showRewardNotification(quest, pointRewards, materialRewards);
+
+        // Show Solo Leveling-style rewards screen
+        if (typeof questRewardsScreen !== 'undefined') {
+            setTimeout(() => {
+                questRewardsScreen.showRewardsScreen(quest, {
+                    xp: pointRewards.xp,
+                    stats: pointRewards.stats,
+                    skillPoints: pointRewards.skillPoints,
+                    material: materialRewards
+                });
+            }, 500);
+        }
         
         // Mark activity for streak
         if (typeof streakSystem !== 'undefined') {
