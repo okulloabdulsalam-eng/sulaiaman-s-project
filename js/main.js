@@ -418,21 +418,22 @@ async function init() {
         questSystem.renderQuests();
         skillSystem.renderSkillTree();
         
-        // Hide loading screen - ensure it's removed completely
-        setTimeout(() => {
+        // Hide loading screen - ensure it always hides even if errors occur
+        const hideLoadingScreen = () => {
             if (loadingScreen) {
                 loadingScreen.style.display = 'none';
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.visibility = 'hidden';
+                loadingScreen.style.pointerEvents = 'none';
                 loadingScreen.classList.add('hidden');
-                // Force remove if still visible
-                setTimeout(() => {
-                    if (loadingScreen && loadingScreen.parentNode) {
-                        loadingScreen.style.display = 'none';
-                        loadingScreen.style.opacity = '0';
-                        loadingScreen.style.visibility = 'hidden';
-                    }
-                }, 100);
             }
-        }, 1000); // Increased timeout for mobile
+        };
+        
+        // Hide after initialization completes
+        setTimeout(hideLoadingScreen, 1000);
+        
+        // Safety timeout - always hide after 10 seconds max (mobile fallback)
+        setTimeout(hideLoadingScreen, 10000);
         
         // Show welcome message with Solo Leveling style
         setTimeout(() => {
