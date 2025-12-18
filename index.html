@@ -499,6 +499,62 @@
             </div>
         </section>
 
+        <!-- Achievements Page -->
+        <section id="page-achievements" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Achievements</h2>
+                </div>
+
+                <!-- Streak Display -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Daily Streak</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Current Streak</div>
+                            <div id="current-streak" style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">0 days 🔥</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Longest Streak</div>
+                            <div id="longest-streak" style="font-size: 2rem; font-weight: bold; color: var(--text-primary);">0 days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Challenges -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Daily Challenges</h3>
+                    <div id="daily-challenges-list" class="challenges-list">
+                        <!-- Daily challenges will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Weekly Challenges -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Weekly Challenges</h3>
+                    <div id="weekly-challenges-list" class="challenges-list">
+                        <!-- Weekly challenges will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Unlocked Achievements -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Unlocked Achievements</h3>
+                    <div id="achievements-unlocked" class="achievements-grid">
+                        <!-- Unlocked achievements will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Locked Achievements -->
+                <div class="glass-panel" style="padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Locked Achievements</h3>
+                    <div id="achievements-locked" class="achievements-grid">
+                        <!-- Locked achievements will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Shop Page -->
         <section id="page-shop" class="page">
             <div class="page-content">
