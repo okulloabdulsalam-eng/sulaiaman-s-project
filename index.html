@@ -76,6 +76,18 @@
                 <span class="nav-icon">🛒</span>
                 <span class="nav-label">Shop</span>
             </button>
+            <button class="nav-btn" data-page="inventory">
+                <span class="nav-icon">🎒</span>
+                <span class="nav-label">Inventory</span>
+            </button>
+            <button class="nav-btn" data-page="history">
+                <span class="nav-icon">📜</span>
+                <span class="nav-label">History</span>
+            </button>
+            <button class="nav-btn" data-page="settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </button>
         </nav>
 
         <!-- Dashboard Page -->
@@ -562,6 +574,98 @@
                     <h2 class="page-title">Real-World Shop</h2>
                 </div>
                 <div id="shop-container"></div>
+            </div>
+        </section>
+
+        <!-- Inventory Page -->
+        <section id="page-inventory" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Inventory</h2>
+                </div>
+                <div id="inventory-container"></div>
+            </div>
+        </section>
+
+        <!-- History Page -->
+        <section id="page-history" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Activity History</h2>
+                </div>
+
+                <!-- History Filters -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1rem;">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                        <input 
+                            type="text" 
+                            id="history-search-input" 
+                            placeholder="Search history..." 
+                            style="flex: 1; min-width: 200px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);"
+                        >
+                        <select id="history-filter-type" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
+                            <option value="">All Types</option>
+                            <option value="quest_completed">Quest Completed</option>
+                            <option value="quest_accepted">Quest Accepted</option>
+                            <option value="xp_gain">XP Gained</option>
+                            <option value="level_up">Level Up</option>
+                            <option value="achievement_unlocked">Achievement</option>
+                            <option value="skill_upgrade">Skill Upgrade</option>
+                        </select>
+                        <button id="btn-history-clear-filters" class="btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <div id="history-container"></div>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="page-settings" class="page">
+            <div class="page-content">
+                <div class="page-header">
+                    <h2 class="page-title">Settings</h2>
+                </div>
+
+                <!-- Data Management -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Data Management</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <button id="btn-export-data" class="btn-primary" style="width: 100%;">
+                            📥 Export Data (Backup)
+                        </button>
+                        <label class="btn-secondary" style="width: 100%; text-align: center; cursor: pointer; padding: 0.75rem;">
+                            📤 Import Data (Restore)
+                            <input type="file" id="import-file-input" accept=".json" style="display: none;" />
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Knowledge Library -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Knowledge Library</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Browse and read knowledge sources that power the quest system.
+                    </p>
+                    <div id="knowledge-library"></div>
+                </div>
+
+                <!-- Shadow Monarch Status -->
+                <div class="glass-panel" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Class Evolution</h3>
+                    <div id="shadow-monarch-status"></div>
+                </div>
+
+                <!-- Loot Boxes -->
+                <div class="glass-panel" style="padding: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">Loot Boxes</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Open loot boxes to receive random rewards.
+                    </p>
+                    <div id="loot-boxes-container"></div>
+                </div>
             </div>
         </section>
     </div>

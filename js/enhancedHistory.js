@@ -15,6 +15,38 @@ class EnhancedHistory {
 
     async init() {
         await this.loadHistory();
+        this.setupHistoryFilters();
+    }
+
+    setupHistoryFilters() {
+        // Search input
+        const searchInput = document.getElementById('history-search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.filters.search = e.target.value || null;
+                this.renderHistory();
+            });
+        }
+
+        // Type filter
+        const typeFilter = document.getElementById('history-filter-type');
+        if (typeFilter) {
+            typeFilter.addEventListener('change', (e) => {
+                this.filters.type = e.target.value || null;
+                this.renderHistory();
+            });
+        }
+
+        // Clear filters button
+        const clearBtn = document.getElementById('btn-history-clear-filters');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                this.clearFilters();
+                if (searchInput) searchInput.value = '';
+                if (typeFilter) typeFilter.value = '';
+                this.renderHistory();
+            });
+        }
     }
 
     async loadHistory() {

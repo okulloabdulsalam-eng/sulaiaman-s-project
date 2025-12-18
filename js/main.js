@@ -78,6 +78,135 @@ function navigateTo(page) {
         if (typeof realWorldShop !== 'undefined') {
             realWorldShop.renderShop();
         }
+    } else if (page === 'inventory') {
+        // Render detailed inventory
+        if (typeof detailedInventory !== 'undefined') {
+            detailedInventory.renderDetailedInventory();
+        }
+    } else if (page === 'history') {
+        // Render enhanced history
+        if (typeof enhancedHistory !== 'undefined') {
+            enhancedHistory.renderHistory();
+        }
+    } else if (page === 'settings') {
+        // Render settings page content
+        renderSettingsPage();
+    }
+}
+
+// Render settings page
+function renderSettingsPage() {
+    // Render knowledge library
+    if (typeof knowledgeReader !== 'undefined') {
+        knowledgeReader.renderSourceLibrary();
+    }
+
+    // Render shadow monarch status
+    renderShadowMonarchStatus();
+
+    // Render loot boxes
+    renderLootBoxes();
+
+    // Setup export/import buttons
+    setupDataManagement();
+}
+
+function renderShadowMonarchStatus() {
+    const container = document.getElementById('shadow-monarch-status');
+    if (!container) return;
+
+    const playerData = gameEngine.getPlayerData();
+    const rank = playerData.rank;
+    
+    if (typeof shadowMonarch !== 'undefined') {
+        const stage = shadowMonarch.getEvolutionStage(rank);
+        const bonus = shadowMonarch.getClassBonus(rank);
+
+        container.innerHTML = `
+            <div style="text-align: center; padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">${stage.special ? '👹' : '⚔️'}</div>
+                <div style="font-size: 1.25rem; font-weight: bold; color: var(--neon-blue); margin-bottom: 0.5rem;">
+                    ${stage.name}
+                </div>
+                <div style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    Class: ${stage.class}
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem;">
+                    <div style="padding: 0.75rem; background: var(--bg-secondary); border-radius: 8px;">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">XP Multiplier</div>
+                        <div style="font-size: 1.25rem; font-weight: bold; color: var(--neon-blue);">
+                            ${bonus.xpMultiplier.toFixed(1)}x
+                        </div>
+                    </div>
+                    <div style="padding: 0.75rem; background: var(--bg-secondary); border-radius: 8px;">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Stat Multiplier</div>
+                        <div style="font-size: 1.25rem; font-weight: bold; color: var(--neon-blue);">
+                            ${bonus.statMultiplier.toFixed(1)}x
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function renderLootBoxes() {
+    const container = document.getElementById('loot-boxes-container');
+    if (!container) return;
+
+    if (typeof lootBoxSystem === 'undefined') {
+        container.innerHTML = '<p class="empty-state">Loot box system not available</p>';
+        return;
+    }
+
+    const lootBoxes = lootBoxSystem.lootBoxes || [];
+    
+    if (lootBoxes.length === 0) {
+        container.innerHTML = '<p class="empty-state">No loot boxes available</p>';
+        return;
+    }
+
+    let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">';
+    
+    lootBoxes.forEach(box => {
+        const rarityClass = box.rarity || 'common';
+        html += `
+            <div class="glass-panel" style="padding: 1.5rem; text-align: center; cursor: pointer;" onclick="lootBoxSystem.openLootBox('${box.rarity}')">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">${box.icon || '📦'}</div>
+                <div style="font-weight: bold; margin-bottom: 0.25rem; color: var(--text-primary);">${box.name}</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">${rarityClass.charAt(0).toUpperCase() + rarityClass.slice(1)}</div>
+                <button class="btn-primary" style="width: 100%;">Open Loot Box</button>
+            </div>
+        `;
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function setupDataManagement() {
+    // Export button
+    const exportBtn = document.getElementById('btn-export-data');
+    if (exportBtn && typeof dataExport !== 'undefined') {
+        exportBtn.addEventListener('click', async () => {
+            await dataExport.exportToFile();
+        });
+    }
+
+    // Import button
+    const importInput = document.getElementById('import-file-input');
+    if (importInput && typeof dataExport !== 'undefined') {
+        importInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const confirmed = confirm('This will replace all your current data. Are you sure?');
+                if (confirmed) {
+                    await dataExport.importFromFile(file);
+                    // Reload page to show updated data
+                    location.reload();
+                }
+            }
+        });
     }
 }
 
