@@ -28,9 +28,9 @@ class MaterialRewards {
     // Load inventory from database
     async loadInventory() {
         try {
-            const saved = await db.get('stats', 'material_rewards');
+            const saved = await db.getStat('material_rewards');
             if (saved) {
-                this.inventory = { ...this.inventory, ...saved.value };
+                this.inventory = { ...this.inventory, ...saved };
             }
         } catch (error) {
             console.error('Error loading material rewards:', error);

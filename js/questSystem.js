@@ -168,6 +168,11 @@ class QuestSystem {
         // Show comprehensive reward notification
         this.showRewardNotification(quest, pointRewards, materialRewards);
 
+        // Check if this is a penalty quest completion
+        if (quest.type === 'penalty' && quest.penaltyId && typeof penaltyQuestSystem !== 'undefined') {
+            await penaltyQuestSystem.removePenalty(quest.penaltyId);
+        }
+
         // Show Solo Leveling-style rewards screen
         if (typeof questRewardsScreen !== 'undefined') {
             setTimeout(() => {

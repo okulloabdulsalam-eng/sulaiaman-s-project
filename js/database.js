@@ -164,7 +164,7 @@ class Database {
 
     async getStat(statName) {
         const result = await this.get('stats', statName);
-        return result ? result.value : 0;
+        return result ? result.value : null;
     }
 
     // History methods

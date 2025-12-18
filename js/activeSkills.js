@@ -97,22 +97,32 @@ class ActiveSkills {
     }
 
     async loadCooldowns() {
-        const saved = await db.get('stats', 'active_skills');
-        if (saved) {
-            this.cooldowns = saved.value.cooldowns || {};
-            this.activeBuffs = saved.value.activeBuffs || [];
-            
-            // Remove expired buffs
-            const now = Date.now();
-            this.activeBuffs = this.activeBuffs.filter(buff => buff.expiresAt > now);
+        try {
+            const saved = await db.getStat('active_skills');
+            if (saved) {
+                this.cooldowns = saved.cooldowns || {};
+                this.activeBuffs = saved.activeBuffs || [];
+                
+                // Remove expired buffs
+                const now = Date.now();
+                this.activeBuffs = this.activeBuffs.filter(buff => buff.expiresAt > now);
+            }
+        } catch (error) {
+            console.error('Error loading active skills:', error);
+            this.cooldowns = {};
+            this.activeBuffs = [];
         }
     }
 
     async saveCooldowns() {
-        await db.saveStat('active_skills', {
-            cooldowns: this.cooldowns,
-            activeBuffs: this.activeBuffs
-        });
+        try {
+            await db.saveStat('active_skills', {
+                cooldowns: this.cooldowns,
+                activeBuffs: this.activeBuffs
+            });
+        } catch (error) {
+            console.error('Error saving active skills:', error);
+        }
     }
 
     getSkill(skillId) {

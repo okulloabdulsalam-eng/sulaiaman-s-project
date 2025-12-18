@@ -21,13 +21,6 @@ function navigateTo(page) {
     // Refresh page content if needed
     if (page === 'quests') {
         questSystem.renderQuests();
-    } else if (page === 'skills') {
-        skillSystem.renderSkillTree();
-    } else if (page === 'stats') {
-        gameEngine.updateStatsUI();
-        if (typeof statisticsDashboard !== 'undefined') {
-            statisticsDashboard.renderDashboard();
-        }
     } else if (page === 'achievements') {
         renderAchievementsPage();
     } else if (page === 'assistant') {
@@ -39,22 +32,35 @@ function navigateTo(page) {
             journalSearch.applyFilters();
         }
         // Load active quests for reporting
-        updateQuestReportDropdown();
-    } else if (page === 'shop') {
-        // Refresh shop
-        if (typeof realWorldShop !== 'undefined') {
-            realWorldShop.renderShop();
+        if (typeof updateQuestReportDropdown === 'function') {
+            updateQuestReportDropdown();
+        } else if (typeof reportSystem !== 'undefined' && typeof reportSystem.updateQuestDropdown === 'function') {
+            reportSystem.updateQuestDropdown();
         }
     } else if (page === 'skills') {
-        // Refresh active skills and crafting
+        // Refresh skill tree and all skill-related features
+        skillSystem.renderSkillTree();
         if (typeof activeSkills !== 'undefined') {
             activeSkills.renderSkills();
+        }
+        if (typeof passiveSkills !== 'undefined') {
+            passiveSkills.renderPassiveSkills();
         }
         if (typeof realWorldCrafting !== 'undefined') {
             realWorldCrafting.renderCrafting();
         }
+        if (typeof instantDungeons !== 'undefined') {
+            instantDungeons.renderDungeons();
+        }
+        if (typeof statAllocation !== 'undefined') {
+            statAllocation.renderStatAllocationUI();
+        }
     } else if (page === 'stats') {
         // Refresh analytics and charts
+        gameEngine.updateStatsUI();
+        if (typeof statisticsDashboard !== 'undefined') {
+            statisticsDashboard.renderDashboard();
+        }
         if (typeof questAnalytics !== 'undefined') {
             await questAnalytics.calculateAnalytics();
             questAnalytics.renderDashboard('quest-analytics-dashboard');
@@ -63,6 +69,14 @@ function navigateTo(page) {
             await progressCharts.loadChartData();
             progressCharts.renderXPChart('xp-chart-container');
             progressCharts.renderQuestChart('quest-chart-container');
+        }
+        if (typeof statAllocation !== 'undefined') {
+            statAllocation.renderStatAllocationUI();
+        }
+    } else if (page === 'shop') {
+        // Refresh shop
+        if (typeof realWorldShop !== 'undefined') {
+            realWorldShop.renderShop();
         }
     }
 }
@@ -358,6 +372,42 @@ async function init() {
             await purchaseReporting.init();
         }
         
+        // Initialize Solo Leveling Missing Features
+        console.log('Initializing stat allocation system...');
+        if (typeof statAllocation !== 'undefined') {
+            await statAllocation.init();
+        }
+        
+        console.log('Initializing penalty quest system...');
+        if (typeof penaltyQuestSystem !== 'undefined') {
+            await penaltyQuestSystem.init();
+        }
+        
+        console.log('Initializing threat detection...');
+        if (typeof threatDetection !== 'undefined') {
+            await threatDetection.init();
+        }
+        
+        console.log('Initializing skill books...');
+        if (typeof skillBooks !== 'undefined') {
+            await skillBooks.init();
+        }
+        
+        console.log('Initializing passive skills...');
+        if (typeof passiveSkills !== 'undefined') {
+            await passiveSkills.init();
+        }
+        
+        console.log('Initializing instant dungeons...');
+        if (typeof instantDungeons !== 'undefined') {
+            await instantDungeons.init();
+        }
+        
+        console.log('Initializing emergency quests...');
+        if (typeof emergencyQuests !== 'undefined') {
+            await emergencyQuests.init();
+        }
+        
         // Setup event listeners
         setupEventListeners();
         
@@ -540,6 +590,26 @@ if ('serviceWorker' in navigator) {
                 console.log('ServiceWorker registration failed:', error);
             });
     });
+}
+
+// Function to update quest report dropdown
+async function updateQuestReportDropdown() {
+    const select = document.getElementById('quest-select-for-report');
+    if (!select) return;
+    
+    try {
+        const activeQuests = await db.getActiveQuests();
+        select.innerHTML = '<option value="">Select a quest to report...</option>';
+        
+        activeQuests.forEach(quest => {
+            const option = document.createElement('option');
+            option.value = quest.id;
+            option.textContent = quest.title;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading quests for dropdown:', error);
+    }
 }
 
 // Initialize when DOM is ready

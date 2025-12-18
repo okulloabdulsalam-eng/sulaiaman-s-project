@@ -112,12 +112,18 @@ class NotificationSystem {
     }
 }
 
-// Global notification function
+// Global notification function with [System] prefix standardization
 function showNotification(title, content, type = 'info', duration = 5000) {
-    if (window.notificationSystem) {
-        return window.notificationSystem.show(title, content, type, duration);
+    // Add [System] prefix if not already present (Solo Leveling style)
+    let formattedTitle = title;
+    if (!title.startsWith('[System]') && !title.startsWith('[')) {
+        formattedTitle = `[System] ${title}`;
     }
-    console.log(`[${type.toUpperCase()}] ${title}: ${content}`);
+    
+    if (window.notificationSystem) {
+        return window.notificationSystem.show(formattedTitle, content, type, duration);
+    }
+    console.log(`[${type.toUpperCase()}] ${formattedTitle}: ${content}`);
 }
 
 // Export singleton instance

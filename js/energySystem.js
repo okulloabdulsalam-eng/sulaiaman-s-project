@@ -22,28 +22,36 @@ class EnergySystem {
     }
 
     async loadEnergyData() {
-        const saved = await db.get('stats', 'energy_system');
-        if (saved) {
-            this.maxEnergy = saved.value.maxEnergy || 100;
-            this.maxFocus = saved.value.maxFocus || 100;
-            this.currentEnergy = saved.value.currentEnergy || 100;
-            this.currentFocus = saved.value.currentFocus || 100;
-            this.lastUpdate = saved.value.lastUpdate || Date.now();
-            
-            // Regenerate based on time passed
-            const hoursPassed = (Date.now() - this.lastUpdate) / (1000 * 60 * 60);
-            this.regenerateOverTime(hoursPassed);
+        try {
+            const saved = await db.getStat('energy_system');
+            if (saved) {
+                this.maxEnergy = saved.maxEnergy || 100;
+                this.maxFocus = saved.maxFocus || 100;
+                this.currentEnergy = saved.currentEnergy || 100;
+                this.currentFocus = saved.currentFocus || 100;
+                this.lastUpdate = saved.lastUpdate || Date.now();
+                
+                // Regenerate based on time passed
+                const hoursPassed = (Date.now() - this.lastUpdate) / (1000 * 60 * 60);
+                this.regenerateOverTime(hoursPassed);
+            }
+        } catch (error) {
+            console.error('Error loading energy data:', error);
         }
     }
 
     async saveEnergyData() {
-        await db.saveStat('energy_system', {
-            maxEnergy: this.maxEnergy,
-            maxFocus: this.maxFocus,
-            currentEnergy: this.currentEnergy,
-            currentFocus: this.currentFocus,
-            lastUpdate: Date.now()
-        });
+        try {
+            await db.saveStat('energy_system', {
+                maxEnergy: this.maxEnergy,
+                maxFocus: this.maxFocus,
+                currentEnergy: this.currentEnergy,
+                currentFocus: this.currentFocus,
+                lastUpdate: Date.now()
+            });
+        } catch (error) {
+            console.error('Error saving energy data:', error);
+        }
     }
 
     regenerateOverTime(hours) {

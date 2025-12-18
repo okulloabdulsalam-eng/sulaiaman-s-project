@@ -109,6 +109,12 @@ class GameEngine {
         this.playerData.level += levels;
         this.playerData.skillPoints += levels * 3; // 3 skill points per level
         
+        // Award stat points for allocation (Solo Leveling style)
+        const statPointsPerLevel = 5; // 5 stat points per level
+        if (typeof statAllocation !== 'undefined') {
+            await statAllocation.awardStatPoints(statPointsPerLevel * levels);
+        }
+        
         // Update rank
         const oldRank = this.playerData.rank;
         this.updateRank();
