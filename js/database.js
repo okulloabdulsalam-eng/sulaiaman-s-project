@@ -4,7 +4,7 @@
 class Database {
     constructor() {
         this.dbName = 'SoloLevelingDB';
-        this.version = 2; // Incremented for knowledge sources
+        this.version = 3; // Incremented for new features
         this.db = null;
     }
 
@@ -56,6 +56,32 @@ class Database {
                     const knowledgeStore = db.createObjectStore('knowledgeSources', { keyPath: 'id' });
                     knowledgeStore.createIndex('domain', 'domain', { unique: false });
                     knowledgeStore.createIndex('author', 'author', { unique: false });
+                }
+
+                // Achievements store
+                if (!db.objectStoreNames.contains('achievements')) {
+                    db.createObjectStore('achievements', { keyPath: 'id' });
+                }
+
+                // Streak data store
+                if (!db.objectStoreNames.contains('streakData')) {
+                    db.createObjectStore('streakData', { keyPath: 'id' });
+                }
+
+                // Quest chains store
+                if (!db.objectStoreNames.contains('questChains')) {
+                    db.createObjectStore('questChains', { keyPath: 'id' });
+                }
+
+                // Challenges store
+                if (!db.objectStoreNames.contains('challenges')) {
+                    db.createObjectStore('challenges', { keyPath: 'id' });
+                }
+
+                // Stat snapshots store
+                if (!db.objectStoreNames.contains('statSnapshots')) {
+                    const snapshotStore = db.createObjectStore('statSnapshots', { keyPath: 'timestamp' });
+                    snapshotStore.createIndex('timestamp', 'timestamp', { unique: false });
                 }
             };
         });
@@ -143,6 +169,61 @@ class Database {
 
     async getKnowledgeSource(sourceId) {
         return this.get('knowledgeSources', sourceId);
+    }
+
+    // Achievements methods
+    async saveAchievements(achievements) {
+        const promises = achievements.map(a => this.put('achievements', a));
+        return Promise.all(promises);
+    }
+
+    async getAchievements() {
+        return this.getAll('achievements');
+    }
+
+    // Streak data methods
+    async saveStreakData(data) {
+        return this.put('streakData', { id: 'current', ...data });
+    }
+
+    async getStreakData() {
+        return this.get('streakData', 'current');
+    }
+
+    // Quest chains methods
+    async saveQuestChains(chains) {
+        const promises = chains.map(c => this.put('questChains', c));
+        return Promise.all(promises);
+    }
+
+    async getQuestChains() {
+        return this.getAll('questChains');
+    }
+
+    // Challenges methods
+    async saveChallenges(data) {
+        return this.put('challenges', { id: 'current', ...data });
+    }
+
+    async getChallenges() {
+        return this.get('challenges', 'current');
+    }
+
+    // Stat snapshots methods
+    async saveStatSnapshot(snapshot) {
+        return this.put('statSnapshots', snapshot);
+    }
+
+    async getStatSnapshots(limit = 100) {
+        const all = await this.getAll('statSnapshots');
+        return all
+            .sort((a, b) => b.timestamp - a.timestamp)
+            .slice(0, limit);
+    }
+
+    // Helper methods
+    async getQuestsByCategory(category) {
+        return this.getByIndex('quests', 'category', category);
     }
 
     // Generic database methods
