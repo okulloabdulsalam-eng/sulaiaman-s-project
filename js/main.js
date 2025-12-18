@@ -3,94 +3,119 @@
  */
 
 // Navigation function
-function navigateTo(page) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    
-    // Show target page
-    const targetPage = document.getElementById(`page-${page}`);
-    if (targetPage) {
-        targetPage.classList.add('active');
-    }
-    
-    // Update nav buttons
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.page === page);
-    });
-    
-    // Refresh page content if needed
-    if (page === 'quests') {
-        questSystem.renderQuests();
-    } else if (page === 'achievements') {
-        renderAchievementsPage();
-    } else if (page === 'assistant') {
-        // Refresh AI journal entries when navigating to assistant page
-        if (typeof aiJournalSystem !== 'undefined') {
-            aiJournalSystem.renderJournalEntries();
+async function navigateTo(page) {
+    try {
+        console.log(`Navigating to: ${page}`);
+        
+        // Hide all pages
+        const allPages = document.querySelectorAll('.page');
+        console.log(`Found ${allPages.length} pages`);
+        allPages.forEach(p => {
+            p.classList.remove('active');
+        });
+        
+        // Show target page
+        const targetPage = document.getElementById(`page-${page}`);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            console.log(`Successfully navigated to: ${page}`);
+        } else {
+            console.error(`Page "${page}" not found! Looking for: page-${page}`);
+            // Show dashboard as fallback
+            const dashboard = document.getElementById('page-dashboard');
+            if (dashboard) {
+                dashboard.classList.add('active');
+            }
+            return;
         }
-        if (typeof journalSearch !== 'undefined') {
-            journalSearch.applyFilters();
+        
+        // Update nav buttons
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.page === page);
+        });
+        
+        // Refresh page content if needed
+        if (page === 'quests') {
+            if (typeof questSystem !== 'undefined') {
+                questSystem.renderQuests();
+            }
+        } else if (page === 'achievements') {
+            renderAchievementsPage();
+        } else if (page === 'assistant') {
+            // Refresh AI journal entries when navigating to assistant page
+            if (typeof aiJournalSystem !== 'undefined') {
+                aiJournalSystem.renderJournalEntries();
+            }
+            if (typeof journalSearch !== 'undefined') {
+                journalSearch.applyFilters();
+            }
+            // Load active quests for reporting
+            if (typeof updateQuestReportDropdown === 'function') {
+                updateQuestReportDropdown();
+            } else if (typeof reportSystem !== 'undefined' && typeof reportSystem.updateQuestDropdown === 'function') {
+                reportSystem.updateQuestDropdown();
+            }
+        } else if (page === 'skills') {
+            // Refresh skill tree and all skill-related features
+            if (typeof skillSystem !== 'undefined') {
+                skillSystem.renderSkillTree();
+            }
+            if (typeof activeSkills !== 'undefined') {
+                activeSkills.renderSkills();
+            }
+            if (typeof passiveSkills !== 'undefined') {
+                passiveSkills.renderPassiveSkills();
+            }
+            if (typeof realWorldCrafting !== 'undefined') {
+                realWorldCrafting.renderCrafting();
+            }
+            if (typeof instantDungeons !== 'undefined') {
+                instantDungeons.renderDungeons();
+            }
+            if (typeof statAllocation !== 'undefined') {
+                statAllocation.renderStatAllocationUI();
+            }
+        } else if (page === 'stats') {
+            // Refresh analytics and charts
+            if (typeof gameEngine !== 'undefined') {
+                gameEngine.updateStatsUI();
+            }
+            if (typeof statisticsDashboard !== 'undefined') {
+                statisticsDashboard.renderDashboard();
+            }
+            if (typeof questAnalytics !== 'undefined') {
+                await questAnalytics.calculateAnalytics();
+                questAnalytics.renderDashboard('quest-analytics-dashboard');
+            }
+            if (typeof progressCharts !== 'undefined') {
+                await progressCharts.loadChartData();
+                progressCharts.renderXPChart('xp-chart-container');
+                progressCharts.renderQuestChart('quest-chart-container');
+            }
+            if (typeof statAllocation !== 'undefined') {
+                statAllocation.renderStatAllocationUI();
+            }
+        } else if (page === 'shop') {
+            // Refresh shop
+            if (typeof realWorldShop !== 'undefined') {
+                realWorldShop.renderShop();
+            }
+        } else if (page === 'inventory') {
+            // Render detailed inventory
+            if (typeof detailedInventory !== 'undefined') {
+                detailedInventory.renderDetailedInventory();
+            }
+        } else if (page === 'history') {
+            // Render enhanced history
+            if (typeof enhancedHistory !== 'undefined') {
+                enhancedHistory.renderHistory();
+            }
+        } else if (page === 'settings') {
+            // Render settings page content
+            renderSettingsPage();
         }
-        // Load active quests for reporting
-        if (typeof updateQuestReportDropdown === 'function') {
-            updateQuestReportDropdown();
-        } else if (typeof reportSystem !== 'undefined' && typeof reportSystem.updateQuestDropdown === 'function') {
-            reportSystem.updateQuestDropdown();
-        }
-    } else if (page === 'skills') {
-        // Refresh skill tree and all skill-related features
-        skillSystem.renderSkillTree();
-        if (typeof activeSkills !== 'undefined') {
-            activeSkills.renderSkills();
-        }
-        if (typeof passiveSkills !== 'undefined') {
-            passiveSkills.renderPassiveSkills();
-        }
-        if (typeof realWorldCrafting !== 'undefined') {
-            realWorldCrafting.renderCrafting();
-        }
-        if (typeof instantDungeons !== 'undefined') {
-            instantDungeons.renderDungeons();
-        }
-        if (typeof statAllocation !== 'undefined') {
-            statAllocation.renderStatAllocationUI();
-        }
-    } else if (page === 'stats') {
-        // Refresh analytics and charts
-        gameEngine.updateStatsUI();
-        if (typeof statisticsDashboard !== 'undefined') {
-            statisticsDashboard.renderDashboard();
-        }
-        if (typeof questAnalytics !== 'undefined') {
-            await questAnalytics.calculateAnalytics();
-            questAnalytics.renderDashboard('quest-analytics-dashboard');
-        }
-        if (typeof progressCharts !== 'undefined') {
-            await progressCharts.loadChartData();
-            progressCharts.renderXPChart('xp-chart-container');
-            progressCharts.renderQuestChart('quest-chart-container');
-        }
-        if (typeof statAllocation !== 'undefined') {
-            statAllocation.renderStatAllocationUI();
-        }
-    } else if (page === 'shop') {
-        // Refresh shop
-        if (typeof realWorldShop !== 'undefined') {
-            realWorldShop.renderShop();
-        }
-    } else if (page === 'inventory') {
-        // Render detailed inventory
-        if (typeof detailedInventory !== 'undefined') {
-            detailedInventory.renderDetailedInventory();
-        }
-    } else if (page === 'history') {
-        // Render enhanced history
-        if (typeof enhancedHistory !== 'undefined') {
-            enhancedHistory.renderHistory();
-        }
-    } else if (page === 'settings') {
-        // Render settings page content
-        renderSettingsPage();
+    } catch (error) {
+        console.error(`Error navigating to ${page}:`, error);
     }
 }
 
@@ -587,11 +612,21 @@ async function init() {
 // Setup event listeners
 function setupEventListeners() {
     // Navigation buttons
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const page = btn.dataset.page;
-            if (page) {
-                navigateTo(page);
+    const navButtons = document.querySelectorAll('.nav-btn');
+    console.log(`Found ${navButtons.length} navigation buttons`);
+    
+    navButtons.forEach((btn, index) => {
+        const page = btn.dataset.page;
+        console.log(`Setting up nav button ${index}: ${page}`);
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const targetPage = btn.dataset.page;
+            console.log(`Navigation button clicked: ${targetPage}`);
+            if (targetPage) {
+                navigateTo(targetPage);
+            } else {
+                console.warn('Navigation button has no data-page attribute');
             }
         });
     });
@@ -629,19 +664,7 @@ function setupEventListeners() {
             }
         });
     });
-}
 
-function closeMoreMenu() {
-    const moreMenu = document.getElementById('more-menu');
-    if (moreMenu) {
-        moreMenu.classList.remove('active');
-        setTimeout(() => {
-            moreMenu.style.display = 'none';
-        }, 300);
-    }
-}
-    
-    
     // Use skill points button
     const useSkillPointsBtn = document.getElementById('btn-use-skill-points');
     if (useSkillPointsBtn) {
@@ -720,28 +743,40 @@ function closeMoreMenu() {
     }
     
     // Game engine event listeners
-    gameEngine.on('levelUp', (data) => {
-        notificationSystem.showLevelUp(data.newLevel, data.skillPointsGained);
-        gameEngine.updateUI();
-    });
-    
-    gameEngine.on('xpGain', (data) => {
-        notificationSystem.showXPGain(data.amount);
-    });
-    
-    gameEngine.on('rankChange', (data) => {
-        notificationSystem.showRankChange(data.oldRank, data.newRank);
-        gameEngine.updateUI();
-    });
+    if (typeof gameEngine !== 'undefined') {
+        gameEngine.on('levelUp', (data) => {
+            if (typeof notificationSystem !== 'undefined') {
+                notificationSystem.showLevelUp(data.newLevel, data.skillPointsGained);
+            }
+            gameEngine.updateUI();
+        });
+        
+        gameEngine.on('xpGain', (data) => {
+            if (typeof notificationSystem !== 'undefined') {
+                notificationSystem.showXPGain(data.amount);
+            }
+        });
+        
+        gameEngine.on('rankChange', (data) => {
+            if (typeof notificationSystem !== 'undefined') {
+                notificationSystem.showRankChange(data.oldRank, data.newRank);
+            }
+            gameEngine.updateUI();
+        });
+    }
     
     // Online/offline status
     window.addEventListener('online', () => {
-        showNotification('Connection Restored', 'You are back online. Syncing data...', 'info');
+        if (typeof showNotification !== 'undefined') {
+            showNotification('Connection Restored', 'You are back online. Syncing data...', 'info');
+        }
         // Sync data here if needed
     });
     
     window.addEventListener('offline', () => {
-        showNotification('Offline Mode', 'You are offline. Core features remain available.', 'info');
+        if (typeof showNotification !== 'undefined') {
+            showNotification('Offline Mode', 'You are offline. Core features remain available.', 'info');
+        }
     });
     
     // Prevent default touch behaviors for better mobile experience
@@ -751,6 +786,16 @@ function closeMoreMenu() {
             return;
         }
     }, { passive: true });
+}
+
+function closeMoreMenu() {
+    const moreMenu = document.getElementById('more-menu');
+    if (moreMenu) {
+        moreMenu.classList.remove('active');
+        setTimeout(() => {
+            moreMenu.style.display = 'none';
+        }, 300);
+    }
 }
 
 // Send message function
