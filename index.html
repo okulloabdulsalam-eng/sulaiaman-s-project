@@ -14,6 +14,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Early error detection - run before any other scripts
+        (function() {
+            console.log('[Early Init] Script loading started');
+            window.earlyErrors = [];
+            
+            // Catch script loading errors
+            window.addEventListener('error', function(e) {
+                if (e.target && e.target.tagName === 'SCRIPT') {
+                    console.error('[Early Init] Script loading error:', e.target.src, e);
+                    window.earlyErrors.push({
+                        type: 'script_load',
+                        src: e.target.src,
+                        message: e.message
+                    });
+                }
+            }, true);
+        })();
+    </script>
 </head>
 <body>
     <!-- Overlay Notification Container -->

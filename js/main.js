@@ -329,19 +329,52 @@ async function init() {
     };
 
     try {
+        // Check for early script loading errors
+        if (window.earlyErrors && window.earlyErrors.length > 0) {
+            console.warn('[INIT] Early script loading errors detected:', window.earlyErrors);
+        }
+        
         // Check for critical dependencies
-        if (typeof db === 'undefined') {
-            throw new Error('Database module (db) is not loaded. Please check that js/database.js is loaded correctly.');
+        const missingModules = [];
+        const criticalChecks = [
+            { name: 'db', file: 'database.js' },
+            { name: 'gameEngine', file: 'gameEngine.js' },
+            { name: 'questSystem', file: 'questSystem.js' },
+            { name: 'skillSystem', file: 'skillSystem.js' }
+        ];
+        
+        criticalChecks.forEach(check => {
+            if (typeof window[check.name] === 'undefined') {
+                missingModules.push(`${check.name} (${check.file})`);
+            }
+        });
+        
+        // Optional but recommended modules
+        const optionalChecks = [
+            { name: 'dataCollection', file: 'dataCollection.js' },
+            { name: 'materialRewardsSystem', file: 'materialRewards.js' },
+            { name: 'reportSystem', file: 'reportSystem.js' },
+            { name: 'aiQuestGenerator', file: 'aiQuestGenerator.js' },
+            { name: 'backgroundQuestGenerator', file: 'backgroundQuestGenerator.js' },
+            { name: 'aiAssistant', file: 'aiAssistant.js' },
+            { name: 'notificationSystem', file: 'notifications.js' },
+            { name: 'prayerTimes', file: 'prayerTimes.js' }
+        ];
+        
+        optionalChecks.forEach(check => {
+            if (typeof window[check.name] === 'undefined') {
+                console.warn(`[INIT] Optional module ${check.name} (${check.file}) not loaded`);
+            }
+        });
+        
+        if (missingModules.length > 0) {
+            const errorMsg = `CRITICAL ERROR: Required modules not loaded:\n\n${missingModules.join('\n')}\n\nPossible causes:\n1. Script files failed to load (check browser Network/Console tabs)\n2. JavaScript syntax errors in script files\n3. File path/permission issues (common on mobile/webview)\n4. CORS or security restrictions\n\nPlease check:\n- Browser console for errors\n- Network tab for failed script loads\n- That all js/*.js files exist and are accessible`;
+            console.error('[INIT] Missing critical modules:', missingModules);
+            console.error('[INIT] Available window properties:', Object.keys(window).filter(k => k.startsWith('db') || k.startsWith('game') || k.startsWith('quest') || k.startsWith('skill')));
+            throw new Error(errorMsg);
         }
-        if (typeof gameEngine === 'undefined') {
-            throw new Error('Game engine module (gameEngine) is not loaded. Please check that js/gameEngine.js is loaded correctly.');
-        }
-        if (typeof questSystem === 'undefined') {
-            throw new Error('Quest system module (questSystem) is not loaded. Please check that js/questSystem.js is loaded correctly.');
-        }
-        if (typeof skillSystem === 'undefined') {
-            throw new Error('Skill system module (skillSystem) is not loaded. Please check that js/skillSystem.js is loaded correctly.');
-        }
+        
+        console.log('[INIT] All critical modules loaded successfully');
 
         // Show loading screen
         if (loadingScreen) {
@@ -827,16 +860,39 @@ async function init() {
         }, 1000);
         
         console.log('Application initialized successfully!');
+        window.appInitialized = true;
         
     } catch (error) {
+        window.appInitialized = false;
         console.error('Error initializing application:', error);
         console.error('Error stack:', error.stack);
         
         // Hide loading screen on error
         hideLoadingScreen();
         
-        // Show detailed error message
-        const errorMessage = `Error initializing application: ${error.message}\n\nPlease check the browser console for more details.\n\nIf this persists, try:\n1. Clearing browser cache\n2. Checking browser console for errors\n3. Refreshing the page`;
+        // Show detailed error message with diagnostic info
+        const diagnosticInfo = [];
+        diagnosticInfo.push(`Error: ${error.message || error}`);
+        if (error.stack) {
+            diagnosticInfo.push(`\nStack: ${error.stack.substring(0, 500)}`);
+        }
+        if (window.earlyErrors && window.earlyErrors.length > 0) {
+            diagnosticInfo.push(`\n\nEarly Errors: ${JSON.stringify(window.earlyErrors)}`);
+        }
+        diagnosticInfo.push(`\n\nBrowser: ${navigator.userAgent}`);
+        diagnosticInfo.push(`IndexedDB: ${window.indexedDB ? 'Available' : 'NOT AVAILABLE'}`);
+        diagnosticInfo.push(`ServiceWorker: ${'serviceWorker' in navigator ? 'Available' : 'NOT AVAILABLE'}`);
+        
+        const errorMessage = `INITIALIZATION ERROR\n\n${diagnosticInfo.join('\n')}\n\nTROUBLESHOOTING:\n1. Open browser console (F12) and check for errors\n2. Check Network tab for failed script loads\n3. Try clearing browser cache\n4. If on mobile/webview, check file permissions\n5. Ensure you're accessing via http:// or https:// (not file://)`;
+        
+        console.error('[INIT] Full error details:', {
+            message: error.message,
+            stack: error.stack,
+            earlyErrors: window.earlyErrors,
+            userAgent: navigator.userAgent,
+            indexedDBAvailable: !!window.indexedDB
+        });
+        
         alert(errorMessage);
         
         // Also try to show error in UI if possible
@@ -1086,11 +1142,60 @@ async function updateQuestReportDropdown() {
     }
 }
 
+// Global error handlers to catch any unhandled errors
+window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error || event.message, event.filename, event.lineno);
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+    }
+    
+    // Show error if init hasn't run yet
+    if (typeof window.appInitialized === 'undefined') {
+        alert(`Script Error: ${event.message || event.error?.message || 'Unknown error'}\n\nFile: ${event.filename}\nLine: ${event.lineno}\n\nPlease check the browser console for more details.`);
+    }
+}, true);
+
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+    }
+    
+    if (typeof window.appInitialized === 'undefined') {
+        alert(`Unhandled Error: ${event.reason?.message || event.reason || 'Unknown error'}\n\nPlease check the browser console for more details.`);
+    }
+});
+
+// Wrap init call to catch any synchronous errors
+function safeInit() {
+    try {
+        console.log('Starting application initialization...');
+        init().then(() => {
+            window.appInitialized = true;
+            console.log('Application initialization complete');
+        }).catch((error) => {
+            console.error('Init promise rejected:', error);
+            window.appInitialized = false;
+        });
+    } catch (error) {
+        console.error('Synchronous error in init wrapper:', error);
+        window.appInitialized = false;
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
+        alert(`Initialization Error: ${error.message || error}\n\nPlease check the browser console for more details.`);
+    }
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', safeInit);
 } else {
-    init();
+    // DOM already loaded, run immediately
+    safeInit();
 }
 
 // Expose navigateTo globally
