@@ -93,3 +93,4 @@ class SkillSynergies {
 
 const skillSynergies = new SkillSynergies();
 
+

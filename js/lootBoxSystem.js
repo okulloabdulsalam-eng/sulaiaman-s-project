@@ -249,3 +249,4 @@ class LootBoxSystem {
 
 const lootBoxSystem = new LootBoxSystem();
 
+

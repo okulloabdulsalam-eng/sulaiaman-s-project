@@ -197,3 +197,4 @@ class SoloLevelingUI {
 
 const soloLevelingUI = new SoloLevelingUI();
 
+

@@ -149,3 +149,4 @@ class JournalSearch {
 
 const journalSearch = new JournalSearch();
 
+

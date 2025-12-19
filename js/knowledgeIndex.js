@@ -247,3 +247,4 @@ class KnowledgeIndex {
 // Export singleton instance
 const knowledgeIndex = new KnowledgeIndex();
 
+
