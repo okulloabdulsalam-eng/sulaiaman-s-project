@@ -317,271 +317,492 @@ function renderAchievementsPage() {
 
 // Initialize application
 async function init() {
+    const loadingScreen = document.getElementById('loading-screen');
+    const hideLoadingScreen = () => {
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.visibility = 'hidden';
+            loadingScreen.style.pointerEvents = 'none';
+            loadingScreen.classList.add('hidden');
+        }
+    };
+
     try {
+        // Check for critical dependencies
+        if (typeof db === 'undefined') {
+            throw new Error('Database module (db) is not loaded. Please check that js/database.js is loaded correctly.');
+        }
+        if (typeof gameEngine === 'undefined') {
+            throw new Error('Game engine module (gameEngine) is not loaded. Please check that js/gameEngine.js is loaded correctly.');
+        }
+        if (typeof questSystem === 'undefined') {
+            throw new Error('Quest system module (questSystem) is not loaded. Please check that js/questSystem.js is loaded correctly.');
+        }
+        if (typeof skillSystem === 'undefined') {
+            throw new Error('Skill system module (skillSystem) is not loaded. Please check that js/skillSystem.js is loaded correctly.');
+        }
+
         // Show loading screen
-        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.opacity = '1';
+            loadingScreen.style.visibility = 'visible';
+        }
         
         // Initialize database
         console.log('Initializing database...');
-        await db.init();
+        try {
+            await db.init();
+        } catch (error) {
+            console.error('Error initializing database:', error);
+            throw new Error(`Database initialization failed: ${error.message}`);
+        }
         
         // Initialize knowledge engine (must be before quest generators)
         console.log('Initializing knowledge engine...');
-        if (typeof knowledgeEngine !== 'undefined') {
-            await knowledgeEngine.init();
-            
-            // Initialize knowledge sync
-            if (typeof knowledgeSync !== 'undefined') {
-                await knowledgeSync.init();
+        try {
+            if (typeof knowledgeEngine !== 'undefined') {
+                await knowledgeEngine.init();
+                
+                // Initialize knowledge sync
+                if (typeof knowledgeSync !== 'undefined') {
+                    await knowledgeSync.init();
+                }
+                
+                // Cache sources for offline use
+                await knowledgeEngine.cacheSources();
+                
+                // Verify coverage
+                const coverage = knowledgeEngine.getCoverageReport();
+                console.log('[Knowledge Engine] Coverage:', coverage);
+                console.log(`[Knowledge Engine] Total sources: ${knowledgeEngine.sources.length}`);
             }
-            
-            // Cache sources for offline use
-            await knowledgeEngine.cacheSources();
-            
-            // Verify coverage
-            const coverage = knowledgeEngine.getCoverageReport();
-            console.log('[Knowledge Engine] Coverage:', coverage);
-            console.log(`[Knowledge Engine] Total sources: ${knowledgeEngine.sources.length}`);
+        } catch (error) {
+            console.error('Error initializing knowledge engine:', error);
+            // Continue - knowledge engine is not critical for basic functionality
         }
         
         // Initialize game engine
         console.log('Initializing game engine...');
-        await gameEngine.init();
+        try {
+            await gameEngine.init();
+        } catch (error) {
+            console.error('Error initializing game engine:', error);
+            throw new Error(`Game engine initialization failed: ${error.message}`);
+        }
         
         // Initialize data collection system first
         console.log('Initializing data collection system...');
-        await dataCollection.init();
+        try {
+            await dataCollection.init();
+        } catch (error) {
+            console.error('Error initializing data collection:', error);
+            // Continue - not critical
+        }
         
         // Initialize material rewards system
         console.log('Initializing material rewards system...');
-        await materialRewardsSystem.init();
+        try {
+            await materialRewardsSystem.init();
+        } catch (error) {
+            console.error('Error initializing material rewards:', error);
+            // Continue - not critical
+        }
         
         // Initialize report system
         console.log('Initializing report system...');
-        await reportSystem.init();
+        try {
+            await reportSystem.init();
+        } catch (error) {
+            console.error('Error initializing report system:', error);
+            // Continue - not critical
+        }
         
         // Initialize AI quest generator
         console.log('Initializing AI quest generator...');
-        await aiQuestGenerator.init();
+        try {
+            await aiQuestGenerator.init();
+        } catch (error) {
+            console.error('Error initializing AI quest generator:', error);
+            // Continue - not critical
+        }
         
         // Initialize quest system
         console.log('Initializing quest system...');
-        await questSystem.init();
+        try {
+            await questSystem.init();
+        } catch (error) {
+            console.error('Error initializing quest system:', error);
+            throw new Error(`Quest system initialization failed: ${error.message}`);
+        }
         
         // Initialize background quest generator
         console.log('Initializing background quest generator...');
-        await backgroundQuestGenerator.init();
+        try {
+            await backgroundQuestGenerator.init();
+        } catch (error) {
+            console.error('Error initializing background quest generator:', error);
+            // Continue - not critical
+        }
         
         // Initialize skill system
         console.log('Initializing skill system...');
-        await skillSystem.init();
+        try {
+            await skillSystem.init();
+        } catch (error) {
+            console.error('Error initializing skill system:', error);
+            throw new Error(`Skill system initialization failed: ${error.message}`);
+        }
         
         // Initialize AI assistant
         console.log('Initializing AI assistant...');
-        await aiAssistant.init();
+        try {
+            await aiAssistant.init();
+        } catch (error) {
+            console.error('Error initializing AI assistant:', error);
+            // Continue - not critical
+        }
         
         // Initialize notification system
         console.log('Initializing notification system...');
-        notificationSystem.init();
+        try {
+            notificationSystem.init();
+        } catch (error) {
+            console.error('Error initializing notification system:', error);
+            // Continue - not critical
+        }
         
         // Initialize prayer times (optional feature)
         console.log('Initializing prayer times...');
-        await prayerTimes.init();
-        prayerTimes.renderPrayerTimes();
+        try {
+            await prayerTimes.init();
+            prayerTimes.renderPrayerTimes();
+        } catch (error) {
+            console.error('Error initializing prayer times:', error);
+            // Continue - optional feature
+        }
         
-        // Initialize new systems
+        // Initialize new systems (all optional - wrap in try-catch)
         console.log('Initializing achievement system...');
-        if (typeof achievementSystem !== 'undefined') {
-            await achievementSystem.init();
+        try {
+            if (typeof achievementSystem !== 'undefined') {
+                await achievementSystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing achievement system:', error);
         }
         
         console.log('Initializing streak system...');
-        if (typeof streakSystem !== 'undefined') {
-            await streakSystem.init();
+        try {
+            if (typeof streakSystem !== 'undefined') {
+                await streakSystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing streak system:', error);
         }
         
         console.log('Initializing statistics dashboard...');
-        if (typeof statisticsDashboard !== 'undefined') {
-            await statisticsDashboard.init();
+        try {
+            if (typeof statisticsDashboard !== 'undefined') {
+                await statisticsDashboard.init();
+            }
+        } catch (error) {
+            console.error('Error initializing statistics dashboard:', error);
         }
         
         console.log('Initializing avatar evolution...');
-        if (typeof avatarEvolution !== 'undefined') {
-            avatarEvolution.updateAvatar();
+        try {
+            if (typeof avatarEvolution !== 'undefined') {
+                avatarEvolution.updateAvatar();
+            }
+        } catch (error) {
+            console.error('Error initializing avatar evolution:', error);
         }
         
         console.log('Initializing quest chains...');
-        if (typeof questChains !== 'undefined') {
-            await questChains.init();
+        try {
+            if (typeof questChains !== 'undefined') {
+                await questChains.init();
+            }
+        } catch (error) {
+            console.error('Error initializing quest chains:', error);
         }
         
         console.log('Initializing daily challenges...');
-        if (typeof dailyChallenges !== 'undefined') {
-            await dailyChallenges.init();
+        try {
+            if (typeof dailyChallenges !== 'undefined') {
+                await dailyChallenges.init();
+            }
+        } catch (error) {
+            console.error('Error initializing daily challenges:', error);
         }
         
         console.log('Initializing enhanced history...');
-        if (typeof enhancedHistory !== 'undefined') {
-            await enhancedHistory.init();
+        try {
+            if (typeof enhancedHistory !== 'undefined') {
+                await enhancedHistory.init();
+            }
+        } catch (error) {
+            console.error('Error initializing enhanced history:', error);
         }
         
         console.log('Initializing audio system...');
-        if (typeof audioSystem !== 'undefined') {
-            audioSystem.init();
+        try {
+            if (typeof audioSystem !== 'undefined') {
+                audioSystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing audio system:', error);
         }
         
         console.log('Initializing shadow monarch system...');
-        if (typeof shadowMonarch !== 'undefined') {
-            await shadowMonarch.checkEvolution();
+        try {
+            if (typeof shadowMonarch !== 'undefined') {
+                await shadowMonarch.checkEvolution();
+            }
+        } catch (error) {
+            console.error('Error initializing shadow monarch:', error);
         }
         
         console.log('Initializing skill synergies...');
-        if (typeof skillSynergies !== 'undefined') {
-            skillSynergies.checkNewSynergy();
+        try {
+            if (typeof skillSynergies !== 'undefined') {
+                skillSynergies.checkNewSynergy();
+            }
+        } catch (error) {
+            console.error('Error initializing skill synergies:', error);
         }
         
         // Initialize AI Journal System
         console.log('Initializing AI journal system...');
-        if (typeof aiJournalSystem !== 'undefined') {
-            await aiJournalSystem.init();
+        try {
+            if (typeof aiJournalSystem !== 'undefined') {
+                await aiJournalSystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing AI journal system:', error);
         }
         
         // Initialize Pending Quest Delivery System
         console.log('Initializing pending quest delivery system...');
-        if (typeof pendingQuestDelivery !== 'undefined') {
-            await pendingQuestDelivery.init();
+        try {
+            if (typeof pendingQuestDelivery !== 'undefined') {
+                await pendingQuestDelivery.init();
+            }
+        } catch (error) {
+            console.error('Error initializing pending quest delivery:', error);
         }
         
         // Initialize Journal Search
         console.log('Initializing journal search system...');
-        if (typeof journalSearch !== 'undefined') {
-            journalSearch.init();
+        try {
+            if (typeof journalSearch !== 'undefined') {
+                journalSearch.init();
+            }
+        } catch (error) {
+            console.error('Error initializing journal search:', error);
         }
         
         // Initialize Quest Analytics
         console.log('Initializing quest analytics...');
-        if (typeof questAnalytics !== 'undefined') {
-            await questAnalytics.init();
+        try {
+            if (typeof questAnalytics !== 'undefined') {
+                await questAnalytics.init();
+            }
+        } catch (error) {
+            console.error('Error initializing quest analytics:', error);
         }
         
         // Initialize Daily Reflection Prompts
         console.log('Initializing daily reflection prompts...');
-        if (typeof dailyReflectionPrompts !== 'undefined') {
-            await dailyReflectionPrompts.init();
+        try {
+            if (typeof dailyReflectionPrompts !== 'undefined') {
+                await dailyReflectionPrompts.init();
+            }
+        } catch (error) {
+            console.error('Error initializing daily reflection prompts:', error);
         }
         
         // Initialize Progress Charts
         console.log('Initializing progress charts...');
-        if (typeof progressCharts !== 'undefined') {
-            await progressCharts.init();
+        try {
+            if (typeof progressCharts !== 'undefined') {
+                await progressCharts.init();
+            }
+        } catch (error) {
+            console.error('Error initializing progress charts:', error);
         }
         
         // Initialize Smart Reminders
         console.log('Initializing smart reminders...');
-        if (typeof smartReminders !== 'undefined') {
-            await smartReminders.init();
+        try {
+            if (typeof smartReminders !== 'undefined') {
+                await smartReminders.init();
+            }
+        } catch (error) {
+            console.error('Error initializing smart reminders:', error);
         }
         
         // Initialize Quest Difficulty Adjustment
         console.log('Initializing quest difficulty adjustment...');
-        if (typeof questDifficultyAdjustment !== 'undefined') {
-            await questDifficultyAdjustment.init();
+        try {
+            if (typeof questDifficultyAdjustment !== 'undefined') {
+                await questDifficultyAdjustment.init();
+            }
+        } catch (error) {
+            console.error('Error initializing quest difficulty adjustment:', error);
         }
         
         // Initialize Journal Achievements
         console.log('Initializing journal achievements...');
-        if (typeof journalAchievements !== 'undefined') {
-            await journalAchievements.init();
+        try {
+            if (typeof journalAchievements !== 'undefined') {
+                await journalAchievements.init();
+            }
+        } catch (error) {
+            console.error('Error initializing journal achievements:', error);
         }
         
         // Initialize Solo Leveling UI
         console.log('Initializing Solo Leveling UI enhancements...');
-        if (typeof soloLevelingUI !== 'undefined') {
-            soloLevelingUI.init();
+        try {
+            if (typeof soloLevelingUI !== 'undefined') {
+                soloLevelingUI.init();
+            }
+        } catch (error) {
+            console.error('Error initializing Solo Leveling UI:', error);
         }
         
         // Initialize Real-World Features
         console.log('Initializing energy system...');
-        if (typeof energySystem !== 'undefined') {
-            await energySystem.init();
+        try {
+            if (typeof energySystem !== 'undefined') {
+                await energySystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing energy system:', error);
         }
         
         console.log('Initializing active skills...');
-        if (typeof activeSkills !== 'undefined') {
-            await activeSkills.init();
+        try {
+            if (typeof activeSkills !== 'undefined') {
+                await activeSkills.init();
+            }
+        } catch (error) {
+            console.error('Error initializing active skills:', error);
         }
         
         console.log('Initializing real-world shop...');
-        if (typeof realWorldShop !== 'undefined') {
-            await realWorldShop.init();
+        try {
+            if (typeof realWorldShop !== 'undefined') {
+                await realWorldShop.init();
+            }
+        } catch (error) {
+            console.error('Error initializing real-world shop:', error);
         }
         
         console.log('Initializing crafting system...');
-        if (typeof realWorldCrafting !== 'undefined') {
-            await realWorldCrafting.init();
+        try {
+            if (typeof realWorldCrafting !== 'undefined') {
+                await realWorldCrafting.init();
+            }
+        } catch (error) {
+            console.error('Error initializing crafting system:', error);
         }
         
         console.log('Initializing purchase reporting...');
-        if (typeof purchaseReporting !== 'undefined') {
-            await purchaseReporting.init();
+        try {
+            if (typeof purchaseReporting !== 'undefined') {
+                await purchaseReporting.init();
+            }
+        } catch (error) {
+            console.error('Error initializing purchase reporting:', error);
         }
         
         // Initialize Solo Leveling Missing Features
         console.log('Initializing stat allocation system...');
-        if (typeof statAllocation !== 'undefined') {
-            await statAllocation.init();
+        try {
+            if (typeof statAllocation !== 'undefined') {
+                await statAllocation.init();
+            }
+        } catch (error) {
+            console.error('Error initializing stat allocation:', error);
         }
         
         console.log('Initializing penalty quest system...');
-        if (typeof penaltyQuestSystem !== 'undefined') {
-            await penaltyQuestSystem.init();
+        try {
+            if (typeof penaltyQuestSystem !== 'undefined') {
+                await penaltyQuestSystem.init();
+            }
+        } catch (error) {
+            console.error('Error initializing penalty quest system:', error);
         }
         
         console.log('Initializing threat detection...');
-        if (typeof threatDetection !== 'undefined') {
-            await threatDetection.init();
+        try {
+            if (typeof threatDetection !== 'undefined') {
+                await threatDetection.init();
+            }
+        } catch (error) {
+            console.error('Error initializing threat detection:', error);
         }
         
         console.log('Initializing skill books...');
-        if (typeof skillBooks !== 'undefined') {
-            await skillBooks.init();
+        try {
+            if (typeof skillBooks !== 'undefined') {
+                await skillBooks.init();
+            }
+        } catch (error) {
+            console.error('Error initializing skill books:', error);
         }
         
         console.log('Initializing passive skills...');
-        if (typeof passiveSkills !== 'undefined') {
-            await passiveSkills.init();
+        try {
+            if (typeof passiveSkills !== 'undefined') {
+                await passiveSkills.init();
+            }
+        } catch (error) {
+            console.error('Error initializing passive skills:', error);
         }
         
         console.log('Initializing instant dungeons...');
-        if (typeof instantDungeons !== 'undefined') {
-            await instantDungeons.init();
+        try {
+            if (typeof instantDungeons !== 'undefined') {
+                await instantDungeons.init();
+            }
+        } catch (error) {
+            console.error('Error initializing instant dungeons:', error);
         }
         
         console.log('Initializing emergency quests...');
-        if (typeof emergencyQuests !== 'undefined') {
-            await emergencyQuests.init();
+        try {
+            if (typeof emergencyQuests !== 'undefined') {
+                await emergencyQuests.init();
+            }
+        } catch (error) {
+            console.error('Error initializing emergency quests:', error);
         }
         
         // Setup event listeners
-        setupEventListeners();
+        try {
+            setupEventListeners();
+        } catch (error) {
+            console.error('Error setting up event listeners:', error);
+            throw new Error(`Event listeners setup failed: ${error.message}`);
+        }
         
         // Render initial UI
-        gameEngine.updateUI();
-        await gameEngine.updateMaterialRewardsUI();
-        questSystem.renderActiveQuestsPreview();
-        questSystem.renderQuests();
-        skillSystem.renderSkillTree();
-        
-        // Hide loading screen - ensure it always hides even if errors occur
-        const hideLoadingScreen = () => {
-            if (loadingScreen) {
-                loadingScreen.style.display = 'none';
-                loadingScreen.style.opacity = '0';
-                loadingScreen.style.visibility = 'hidden';
-                loadingScreen.style.pointerEvents = 'none';
-                loadingScreen.classList.add('hidden');
-            }
-        };
+        try {
+            gameEngine.updateUI();
+            await gameEngine.updateMaterialRewardsUI();
+            questSystem.renderActiveQuestsPreview();
+            questSystem.renderQuests();
+            skillSystem.renderSkillTree();
+        } catch (error) {
+            console.error('Error rendering initial UI:', error);
+            // Continue - UI will update on next interaction
+        }
         
         // Hide after initialization completes
         setTimeout(hideLoadingScreen, 1000);
@@ -591,13 +812,17 @@ async function init() {
         
         // Show welcome message with Solo Leveling style
         setTimeout(() => {
-            const playerData = gameEngine.getPlayerData();
-            showNotification('[System] Initialization Complete', 'Welcome back, Hunter. The System is ready. Describe your activities to generate quests.', 'info');
-            
-            // Show system message
-            const aiMessageContent = document.getElementById('ai-message-content');
-            if (aiMessageContent) {
-                aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. The System will automatically generate quests based on your activities. You can also manually request quests or chat with me about your day, Hunter.`;
+            try {
+                const playerData = gameEngine.getPlayerData();
+                showNotification('[System] Initialization Complete', 'Welcome back, Hunter. The System is ready. Describe your activities to generate quests.', 'info');
+                
+                // Show system message
+                const aiMessageContent = document.getElementById('ai-message-content');
+                if (aiMessageContent) {
+                    aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. The System will automatically generate quests based on your activities. You can also manually request quests or chat with me about your day, Hunter.`;
+                }
+            } catch (error) {
+                console.error('Error showing welcome message:', error);
             }
         }, 1000);
         
@@ -605,7 +830,25 @@ async function init() {
         
     } catch (error) {
         console.error('Error initializing application:', error);
-        alert('Error initializing application. Please refresh the page.');
+        console.error('Error stack:', error.stack);
+        
+        // Hide loading screen on error
+        hideLoadingScreen();
+        
+        // Show detailed error message
+        const errorMessage = `Error initializing application: ${error.message}\n\nPlease check the browser console for more details.\n\nIf this persists, try:\n1. Clearing browser cache\n2. Checking browser console for errors\n3. Refreshing the page`;
+        alert(errorMessage);
+        
+        // Also try to show error in UI if possible
+        try {
+            const aiMessageContent = document.getElementById('ai-message-content');
+            if (aiMessageContent) {
+                aiMessageContent.textContent = `System Error: ${error.message}. Please refresh the page.`;
+                aiMessageContent.style.color = '#ef4444';
+            }
+        } catch (uiError) {
+            console.error('Could not display error in UI:', uiError);
+        }
     }
 }
 

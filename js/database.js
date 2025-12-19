@@ -9,12 +9,23 @@ class Database {
     }
 
     async init() {
+        // Check if IndexedDB is available
+        if (!window.indexedDB) {
+            const error = new Error('IndexedDB is not supported in this browser. Please use a modern browser that supports IndexedDB.');
+            console.error('[Database] IndexedDB not available:', error);
+            throw error;
+        }
+
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(this.dbName, this.version);
 
-            request.onerror = () => reject(request.error);
+            request.onerror = () => {
+                console.error('[Database] IndexedDB open error:', request.error);
+                reject(request.error);
+            };
             request.onsuccess = () => {
                 this.db = request.result;
+                console.log('[Database] Database initialized successfully');
                 resolve();
             };
 
