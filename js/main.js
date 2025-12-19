@@ -846,21 +846,29 @@ async function init() {
         // Show welcome message with Solo Leveling style
         setTimeout(() => {
             try {
-                const playerData = gameEngine.getPlayerData();
-                showNotification('[System] Initialization Complete', 'Welcome back, Hunter. The System is ready. Describe your activities to generate quests.', 'info');
-                
-                // Show system message
-                const aiMessageContent = document.getElementById('ai-message-content');
-                if (aiMessageContent) {
-                    aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. The System will automatically generate quests based on your activities. You can also manually request quests or chat with me about your day, Hunter.`;
+                if (typeof gameEngine !== 'undefined' && gameEngine) {
+                    const playerData = gameEngine.getPlayerData();
+                    if (playerData) {
+                        if (typeof showNotification !== 'undefined') {
+                            showNotification('[System] Initialization Complete', 'Welcome back, Hunter. The System is ready. Describe your activities to generate quests.', 'info');
+                        }
+                        
+                        // Show system message
+                        const aiMessageContent = document.getElementById('ai-message-content');
+                        if (aiMessageContent) {
+                            aiMessageContent.textContent = `System active. Current status: Level ${playerData.level}, Rank ${playerData.rank}. The System will automatically generate quests based on your activities. You can also manually request quests or chat with me about your day, Hunter.`;
+                        }
+                    }
                 }
             } catch (error) {
                 console.error('Error showing welcome message:', error);
+                // Don't throw - this is non-critical
             }
         }, 1000);
         
         console.log('Application initialized successfully!');
         window.appInitialized = true;
+        console.log('[INIT] ✓ Application is ready. All systems operational.');
         
     } catch (error) {
         window.appInitialized = false;
@@ -1144,27 +1152,72 @@ async function updateQuestReportDropdown() {
 
 // Global error handlers to catch any unhandled errors
 window.addEventListener('error', (event) => {
-    console.error('Global error caught:', event.error || event.message, event.filename, event.lineno);
+    // Ignore resource loading errors (like 404s for images, fonts, etc.)
+    if (event.target && (event.target.tagName === 'IMG' || event.target.tagName === 'LINK' || event.target.tagName === 'SCRIPT')) {
+        console.warn('Resource loading error (non-critical):', event.target.src || event.target.href);
+        return; // Don't show alerts for resource loading errors
+    }
+    
+    // Ignore errors from browser extensions
+    if (event.filename && (
+        event.filename.includes('extension://') || 
+        event.filename.includes('moz-extension://') || 
+        event.filename.includes('chrome-extension://') ||
+        event.filename.includes('safari-extension://')
+    )) {
+        console.warn('Extension error (ignored):', event.message);
+        return;
+    }
+    
+    console.error('Global error caught:', {
+        message: event.message || event.error?.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error,
+        stack: event.error?.stack
+    });
+    
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
         loadingScreen.style.display = 'none';
     }
     
-    // Show error if init hasn't run yet
-    if (typeof window.appInitialized === 'undefined') {
-        alert(`Script Error: ${event.message || event.error?.message || 'Unknown error'}\n\nFile: ${event.filename}\nLine: ${event.lineno}\n\nPlease check the browser console for more details.`);
+    // Only show alert if init hasn't run yet OR if it's a critical error
+    // Don't show alerts for minor errors after successful initialization
+    if (typeof window.appInitialized === 'undefined' || window.appInitialized === false) {
+        const errorMsg = `Script Error: ${event.message || event.error?.message || 'Unknown error'}\n\nFile: ${event.filename}\nLine: ${event.lineno}\n\nPlease check the browser console for more details.`;
+        console.error('[CRITICAL]', errorMsg);
+        // Only alert if it's a critical initialization error
+        if (!window.appInitialized) {
+            alert(errorMsg);
+        }
+    } else {
+        console.warn('[NON-CRITICAL] Error after initialization (logged but not shown to user):', event.message || event.error?.message);
     }
 }, true);
 
 window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason);
+    console.error('Unhandled promise rejection:', {
+        reason: event.reason,
+        message: event.reason?.message,
+        stack: event.reason?.stack
+    });
+    
     const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
+    if (loadingScreen && !window.appInitialized) {
         loadingScreen.style.display = 'none';
     }
     
-    if (typeof window.appInitialized === 'undefined') {
-        alert(`Unhandled Error: ${event.reason?.message || event.reason || 'Unknown error'}\n\nPlease check the browser console for more details.`);
+    // Only show alert if init hasn't run yet
+    if (typeof window.appInitialized === 'undefined' || window.appInitialized === false) {
+        const errorMsg = `Unhandled Error: ${event.reason?.message || event.reason || 'Unknown error'}\n\nPlease check the browser console for more details.`;
+        console.error('[CRITICAL]', errorMsg);
+        if (!window.appInitialized) {
+            alert(errorMsg);
+        }
+    } else {
+        console.warn('[NON-CRITICAL] Unhandled rejection after initialization (logged but not shown to user):', event.reason?.message || event.reason);
     }
 });
 
